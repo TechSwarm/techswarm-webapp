@@ -10,27 +10,30 @@
     <script type="text/javascript" src="js/tswebapp.js"></script>
 
     <link rel="stylesheet" type="text/css" href="css/semantic.css"> <!-- Replace with optimised version BEFORE deployment! -->
+
+    <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body class="pushable">
     <div class="ui vertical sidebar menu left overlay" id="sidebar">
-        <div class="item">Menu</div>
+        <div class="item logo image"><img src="https://www.techswarm.org/images/logo.png"></div>
+        <a class="item">Dashboard</a>
+        <a class="item">Planetary data</a>
+        <a class="item">Sensors</a>
+        <a class="item">Photos</a>
     </div>
 
     <div class="ui fixed main menu">
-        <div class="item right">
-            <a href="http://www.techswarm.org">www.techswarm.org</a>
-        </div>
-        <a class="view-sidebar item">
-            <i class="sidebar icon"></i>
-            Menu
-        </a>
+        <a class="item right" href="http://www.techswarm.org"><i class="home icon"></i>www.techswarm.org</a>
+        <a class="view-sidebar item"><i class="sidebar icon"></i>Menu</a>
         <div class="title item">
             <b>TechSwarm Mission Control</b>
         </div>
     </div>
 
-    <div id="#primary" class="pusher">
-
+    <div id="primary" class="pusher">
+        <div class="segment" style="padding: 10px">
+            <h3>Mission status: It might even fly if we add more duct tape.</h3>
+        </div>
     </div>
 
 </body>

@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    "use strict";
     $('#sidebar').sidebar({
         transition       : 'overlay',
         mobileTransition : 'overlay'

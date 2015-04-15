@@ -6,9 +6,32 @@
     <script type="text/javascript" src="js/jquery-2.1.3.js"></script> <!-- Replace with Google CDN version BEFORE deployment! -->
     <script type="text/javascript" src="js/highcharts-4.1.5-DEV.js"></script> <!-- Replace with optimised version BEFORE deployment! -->
     <script type="text/javascript" src="js/semantic.js"></script> <!-- Replace with optimised version BEFORE deployment! -->
+
+    <script type="text/javascript" src="js/tswebapp.js"></script>
+
     <link rel="stylesheet" type="text/css" href="css/semantic.css"> <!-- Replace with optimised version BEFORE deployment! -->
 </head>
-<body>
+<body class="pushable">
+    <div class="ui vertical sidebar menu left overlay" id="sidebar">
+        <div class="item">Menu</div>
+    </div>
+
+    <div class="ui fixed main menu">
+        <div class="item right">
+            <a href="http://www.techswarm.org">www.techswarm.org</a>
+        </div>
+        <a class="view-sidebar item">
+            <i class="sidebar icon"></i>
+            Menu
+        </a>
+        <div class="title item">
+            <b>TechSwarm Mission Control</b>
+        </div>
+    </div>
+
+    <div id="#primary" class="pusher">
+
+    </div>
 
 </body>
 </html>

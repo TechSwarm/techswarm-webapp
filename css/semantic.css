@@ -23241,7 +23241,7 @@ th {
 .pushable {
   height: 100%;
   overflow-x: hidden;
-  background: #333333 !important;
+  /* background: #333333 !important; */
 }
 
 /*--------------

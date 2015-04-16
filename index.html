@@ -13,9 +13,9 @@
 
     <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
-<body class="pushable">
+<body class="ui">
     <div class="ui vertical sidebar menu left overlay" id="sidebar">
-        <div class="item logo image"><img src="https://www.techswarm.org/images/logo.png"></div>
+        <div class="item logo image"><img src="logo.png"></div>
         <a class="item">Dashboard</a>
         <a class="item">Planetary data</a>
         <a class="item">Sensors</a>
@@ -27,6 +27,55 @@
         <a class="view-sidebar item"><i class="sidebar icon"></i>Menu</a>
         <div class="title item">
             <b>TechSwarm Mission Control</b>
+        </div>
+    </div>
+
+
+    <div class="info segment">
+        <div class="manu-bar-space"></div>
+        <div class="ui grid">
+            <div class="thirteen wide column">
+                <div id="mission-phase" class="ui small steps">
+                    <div class="active step">
+                        <i class="settings icon"></i>
+                        <div class="content">
+                            <div class="title">Launch preparation</div>
+                            <div class="description"></div>
+                        </div>
+                    </div>
+                    <div class="disabled step">
+                        <i class="rocket icon"></i>
+                        <div class="content">
+                            <div class="title">Launch</div>
+                            <div class="description"></div>
+                        </div>
+                    </div>
+                    <div class="disabled step">
+                        <i class="space shuttle icon"></i>
+                        <div class="content">
+                            <div class="title">Descend</div>
+                            <div class="description"></div>
+                        </div>
+                    </div>
+                    <div class="disabled step">
+                        <i class="world icon"></i>
+                        <div class="content">
+                            <div class="title">Ground operations</div>
+                            <div class="description"></div>
+                        </div>
+                    </div>
+                    <div class="disabled step">
+                        <i class="checkmark icon"></i>
+                        <div class="content">
+                            <div class="title">Mission complete</div>
+                            <div class="description"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="center aligned three wide column">
+                <div class="ui system">Server: <span id="system-status"> Connecting</span><div class="ui active inline small loader"></div></div>
+            </div>
         </div>
     </div>
 

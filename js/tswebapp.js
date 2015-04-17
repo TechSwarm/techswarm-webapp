@@ -28,19 +28,19 @@ function setServerStatus(status) { // status: 0 - Connecting, -1 - Connection fa
     "use strict";
     if (status === 0) {
         $('#status-server').html("Connecting").css("color", "black").parent().next().find('.loader').addClass("active");
-        $('#status-cansat').html(" – ").css("color", "black");
+        $('#status-cansat').html(" â€“ ").css("color", "black");
     } else if (status === 1) {
         $('#status-server').html("Connected").css("color", "green").parent().next().find('.loader').removeClass("active");
     } else if (status === -1) {
         $('#status-server').html("Connection failed!").css("color", "red").parent().next().find('.loader').removeClass("active");
-        $('#status-cansat').html(" – ").css("color", "black");
+        $('#status-cansat').html(" â€“ ").css("color", "black");
     }
 }
 
 function setCansatStatus(status) { // status: 0 - Unknown , -1 - Offline, 1 - Online
     "use strict";
     if (status === 0) {
-        $('#status-cansat').html(" – ").css("color", "black");
+        $('#status-cansat').html(" â€“ ").css("color", "black");
     } else if (status === 1) {
         $('#status-cansat').html("Online").css("color", "green");
     } else if (status === -1) {

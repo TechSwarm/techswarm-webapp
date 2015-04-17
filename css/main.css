@@ -2,26 +2,41 @@
   box-shadow: rgba(0, 0, 0, 0.4) 0 2px 4px; }
 
 .info {
-  padding: 10px 20px 15px;
+  padding: 15px 20px 15px;
   background-color: #FFFFFF;
   border-bottom: 1px solid #DDDDDD;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); }
   .info .menu-bar-space {
     height: 37px; }
-
-.status {
-  font-size: large; }
-  .status #status-server, .status #status-cansat {
-    font-family: 'Lucida Console', 'Lucida Sans Typewriter', monaco, 'Bitstream Vera Sans Mono', monospace; }
-  .status tbody td {
-    padding-right: 10px; }
-  .status tbody tr:first-child {
-    text-align: right; }
-  .status tbody tr {
-    text-align: center; }
+  .info .status {
+    width: 290px;
+    display: inline;
+    float: right;
+    font-size: large; }
+    @media only screen and (max-width: 1250px) {
+      .info .status {
+        display: block;
+        float: none;
+        margin: 0 auto;
+        text-align: center;
+        padding-bottom: 5px; } }
+    .info .status #status-server, .info .status #status-cansat {
+      font-family: 'Lucida Console', 'Lucida Sans Typewriter', monaco, 'Bitstream Vera Sans Mono', monospace; }
+    .info .status tbody td {
+      padding-left: 10px; }
+    .info .status tbody tr:first-child {
+      text-align: right; }
+    .info .status tbody tr {
+      text-align: center; }
+  .info .steps.ui {
+    margin: 0 auto;
+    display: inline; }
 
 #primary {
-  padding-top: 10px; }
+  width: 1250px;
+  margin: 0 auto;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  height: inherit; }
 
 .logo img {
   width: 200px; }

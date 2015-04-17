@@ -3,95 +3,103 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>TechSwarm mission control</title>
-    <script type="text/javascript" src="js/jquery-2.1.3.js"></script> <!-- Replace with Google CDN version BEFORE deployment! -->
-    <script type="text/javascript" src="js/highcharts-4.1.5-DEV.js"></script> <!-- Replace with optimised version BEFORE deployment! -->
-    <script type="text/javascript" src="js/semantic.js"></script> <!-- Replace with optimised version BEFORE deployment! -->
+    <script type="text/javascript" src="js/jquery-2.1.3.js"></script>
+    <!-- Replace with Google CDN version BEFORE deployment! -->
+    <script type="text/javascript" src="js/highcharts-4.1.5-DEV.js"></script>
+    <!-- Replace with optimised version BEFORE deployment! -->
+    <script type="text/javascript" src="js/semantic.js"></script>
+    <!-- Replace with optimised version BEFORE deployment! -->
 
     <script type="text/javascript" src="js/tswebapp.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="css/semantic.css"> <!-- Replace with optimised version BEFORE deployment! -->
+    <link rel="stylesheet" type="text/css" href="css/semantic.css">
+    <!-- Replace with optimised version BEFORE deployment! -->
 
     <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
-<tr class="ui">
-    <div class="ui vertical sidebar menu left overlay" id="sidebar">
-        <div class="item logo image"><img src="logo.png"></div>
-        <a class="item">Dashboard</a>
-        <a class="item">Planetary data</a>
-        <a class="item">Sensors</a>
-        <a class="item">Photos</a>
+<body class="ui">
+<div class="ui vertical sidebar menu left overlay" id="sidebar">
+    <div class="item logo image"><img src="logo.png"></div>
+    <a class="item">Dashboard</a>
+    <a class="item">Planetary data</a>
+    <a class="item">Sensors</a>
+    <a class="item">Photos</a>
+</div>
+
+<div class="ui fixed main menu">
+    <a class="item right" href="http://www.techswarm.org"><i class="home icon"></i>www.techswarm.org</a>
+    <a class="view-sidebar item"><i class="sidebar icon"></i>Menu</a>
+
+    <div class="title item">
+        <b>TechSwarm Mission Control</b>
     </div>
+</div>
 
-    <div class="ui fixed main menu">
-        <a class="item right" href="http://www.techswarm.org"><i class="home icon"></i>www.techswarm.org</a>
-        <a class="view-sidebar item"><i class="sidebar icon"></i>Menu</a>
-        <div class="title item">
-            <b>TechSwarm Mission Control</b>
-        </div>
+
+<div class="info segment">
+    <div class="menu-bar-space"></div>
+    <div class="ui status">
+        <table>
+            <tr>
+                <td>Server:</td>
+                <td><span id="status-server"> Connecting</span></td>
+                <td rowspan="2">
+                    <div class="ui active inline loader"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>CanSat:</td>
+                <td><span id="status-cansat">  – </span></td>
+            </tr>
+        </table>
     </div>
+    <div id="mission-phase" class="ui small steps">
+        <div class="disabled step">
+            <i class="settings icon"></i>
 
-
-    <div class="info segment">
-        <div class="menu-bar-space"></div>
-        <div class="ui grid">
-            <div class="twelve wide column">
-                <div id="mission-phase" class="ui small steps">
-                    <div class="disabled step">
-                        <i class="settings icon"></i>
-                        <div class="content">
-                            <div class="title">Launch preparation</div>
-                            <div class="description"></div>
-                        </div>
-                    </div>
-                    <div class="disabled step">
-                        <i class="rocket icon"></i>
-                        <div class="content">
-                            <div class="title">Launch</div>
-                            <div class="description"></div>
-                        </div>
-                    </div>
-                    <div class="disabled step">
-                        <i class="space shuttle icon"></i>
-                        <div class="content">
-                            <div class="title">Descend</div>
-                            <div class="description"></div>
-                        </div>
-                    </div>
-                    <div class="disabled step">
-                        <i class="world icon"></i>
-                        <div class="content">
-                            <div class="title">Ground operations</div>
-                            <div class="description"></div>
-                        </div>
-                    </div>
-                    <div class="disabled step">
-                        <i class="checkmark icon"></i>
-                        <div class="content">
-                            <div class="title">Mission complete</div>
-                            <div class="description"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="right aligned four wide column">
-                <div class="ui status">
-                    <table align="right">
-                    <tr>
-                        <td>Server: </td><td><span id="status-server"> Connecting</span></td><td rowspan="2"><div class="ui active inline loader"></div></td>
-                    </tr><tr>
-                        <td>CanSat: </td><td><span id="status-cansat">  – </span></td>
-                    </tr>
-                    </table>
-                </div>
+            <div class="content">
+                <div class="title">Launch preparation</div>
+                <div class="description"></div>
             </div>
         </div>
-    </div>
+        <div class="disabled step">
+            <i class="rocket icon"></i>
 
-    <div id="primary" class="pusher">
-        <div class="segment" style="padding: 10px">
-            <h3>Mission status: It might even fly if we add more duct tape.</h3>
+            <div class="content">
+                <div class="title">Launch</div>
+                <div class="description"></div>
+            </div>
+        </div>
+        <div class="disabled step">
+            <i class="space shuttle icon"></i>
+
+            <div class="content">
+                <div class="title">Descend</div>
+                <div class="description"></div>
+            </div>
+        </div>
+        <div class="disabled step">
+            <i class="world icon"></i>
+
+            <div class="content">
+                <div class="title">Ground operations</div>
+                <div class="description"></div>
+            </div>
+        </div>
+        <div class="disabled step">
+            <i class="checkmark icon"></i>
+
+            <div class="content">
+                <div class="title">Mission complete</div>
+                <div class="description"></div>
+            </div>
         </div>
     </div>
+</div>
+
+<div id="primary" class="pusher">
+
+</div>
 
 </body>
 </html>

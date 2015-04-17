@@ -13,7 +13,7 @@
 
     <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
-<body class="ui">
+<tr class="ui">
     <div class="ui vertical sidebar menu left overlay" id="sidebar">
         <div class="item logo image"><img src="logo.png"></div>
         <a class="item">Dashboard</a>
@@ -32,11 +32,11 @@
 
 
     <div class="info segment">
-        <div class="manu-bar-space"></div>
+        <div class="menu-bar-space"></div>
         <div class="ui grid">
-            <div class="thirteen wide column">
+            <div class="twelve wide column">
                 <div id="mission-phase" class="ui small steps">
-                    <div class="active step">
+                    <div class="disabled step">
                         <i class="settings icon"></i>
                         <div class="content">
                             <div class="title">Launch preparation</div>
@@ -73,8 +73,16 @@
                     </div>
                 </div>
             </div>
-            <div class="center aligned three wide column">
-                <div class="ui system">Server: <span id="system-status"> Connecting</span><div class="ui active inline small loader"></div></div>
+            <div class="right aligned four wide column">
+                <div class="ui status">
+                    <table align="right">
+                    <tr>
+                        <td>Server: </td><td><span id="status-server"> Connecting</span></td><td rowspan="2"><div class="ui active inline loader"></div></td>
+                    </tr><tr>
+                        <td>CanSat: </td><td><span id="status-cansat">  – </span></td>
+                    </tr>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

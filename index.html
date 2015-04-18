@@ -10,6 +10,9 @@
     <script type="text/javascript" src="js/semantic.js"></script>
     <!-- Replace with optimised version BEFORE deployment! -->
 
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+    <script type="text/javascript" src="js/gmaps.js"></script>
+
     <script type="text/javascript" src="js/tswebapp.js"></script>
 
     <link rel="stylesheet" type="text/css" href="css/semantic.css">
@@ -20,10 +23,10 @@
 <body class="ui pushable">
 <div class="ui vertical sidebar menu left overlay" id="sidebar">
     <div class="item logo image"><img src="logo.png"></div>
-    <a class="item">Dashboard</a>
-    <a class="item">Planetary data</a>
-    <a class="item">Sensors</a>
-    <a class="item">Photos</a>
+    <a class="active item" data-tab="dashboard">Dashboard</a>
+    <a class="item" data-tab="telemetry">Telemetry</a>
+    <a class="item" data-tab="planetary-data">Planetary data</a>
+    <a class="item" data-tab="photos">Photos</a>
 </div>
 
 <div class="ui fixed main menu">
@@ -99,7 +102,20 @@
 
 <div id="primary" class="pusher">
     <div class="content">
-        
+        <div class="ui active tab" data-tab="dashboard">
+            <h1>Dashboard</h1>
+
+
+        </div>
+        <div class="ui tab" data-tab="telemetry">
+            <h1>Telemetry</h1>
+        </div>
+        <div class="ui tab" data-tab="planetary-data">
+            <h1>Planetary data</h1>
+        </div>
+        <div class="ui tab" data-tab="photos">
+            <h1>Photos</h1>
+        </div>
     </div>
 </div>
 

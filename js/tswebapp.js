@@ -2,56 +2,97 @@
 var serverAddress = ""; // if empty current server will be used
 //CONFIG
 
-var parameters = {
-  temp: {
-      title: "Temperature",
-      valueSuffix: '°C'
-  },
-  humi: {
-      title: "Humidity",
-      valueSuffix: '%'
-  },
-  pres: {
-      title: "Pressure",
-      valueSuffix: 'hPa'
-  },
-  accel: {
-      title: "Acceleration",
-      valueSuffix: 'g'
-  },
-  magn: {
-      title: "Magnetic field",
-      valueSuffix: 'gauss'
-  },
-  gyro: {
-      title: "Orientation",
-      valueSuffix: '°'
-  }
+var elements;
+elements = {
+    temp: {
+        type: 'chart',
+        chartType: 'spline',
+        title: "Temperature",
+        valueSuffix: '°C',
+        container: 'telemetry-temp',
+        handle: {}
+    },
+    humi: {
+        type: 'chart',
+        chartType: 'spline',
+        title: "Humidity",
+        valueSuffix: '%',
+        container: 'telemetry-humi',
+        handle: {}
+    },
+    pres: {
+        type: 'chart',
+        chartType: 'spline',
+        title: "Pressure",
+        valueSuffix: 'hPa',
+        container: 'telemetry-pres',
+        handle: {}
+    },
+    accel: {
+        type: 'chart',
+        chartType: 'spline',
+        title: "Acceleration",
+        valueSuffix: 'g',
+        container: 'telemetry-accel',
+        handle: {}
+    },
+    magn: {
+        type: 'chart',
+        chartType: 'spline',
+        title: "Magnetic field",
+        valueSuffix: 'gauss',
+        container: 'telemetry-magn',
+        handle: {}
+    },
+    gyro: {
+        type: 'chart',
+        chartType: 'spline',
+        title: "Orientation",
+        valueSuffix: '°',
+        container: 'telemetry-gyro',
+        handle: {}
+    },
+    gps: {
+        type: 'map',
+        title: "Position",
+        container: 'telemetry-gps',
+        handle: {}
+    }
 };
 
-$(document).ready(function () {
+function initialiseElement(name, data) {
     "use strict";
-    $('#sidebar').sidebar({
-        transition: 'overlay',
-        mobileTransition: 'overlay',
-        dimPage: false
-    })
-        .sidebar('attach events', '.view-sidebar', 'toggle');
-
-    $('.sidebar.menu .item')
-        .tab()
-    ;
-
-    if (serverAddress === "") {
-        serverAddress = window.location.host;
+    if (elements[name].type === 'map') {
+        elements[name].Handler = new GMaps({
+            div: '#' + elements[name].container,
+            lat: 50.06222, //TODO: set this to current ground station position
+            lng: 19.928808  //
+        });
     }
-
-    setTimeout(function () { //TODO: Actually do something.
-        setServerStatus(1);
-        setCansatStatus(1);
-        setMissionPhase(3);
-    }, 2000);
-});
+    else if (elements[name].type === 'chart') {
+        elements[name].handle = new Highcharts.Chart({
+            chart: {
+                renderTo: elements[name].container,
+                type: elements[name].chartType
+            },
+            title: {
+                text: elements[name].title
+            },
+            credits: {
+                enabled: false
+            },
+            yAxis: {
+                labels: {
+                    format: '{value}' + elements[name].valueSuffix
+                }
+            },
+            tooltip: {
+                valueSuffix: elements[name].valueSuffix
+            },
+            series: data
+        });
+    }
+}
 
 function setMissionPhase(phase) { // phase: 1 - Launch preparation, 2 - Launch, 3 - Descend, 4 - Ground operations, 5 - Mission complete
     "use strict";
@@ -93,3 +134,22 @@ function setCansatStatus(status) { // status: 0 - Unknown , -1 - Offline, 1 - On
         $('#status-cansat').html("Offline").css("color", "black");
     }
 }
+
+$(document).ready(function () {
+    "use strict";
+    $('#sidebar').sidebar({
+        transition: 'overlay',
+        mobileTransition: 'overlay',
+        dimPage: false
+    })
+        .sidebar('attach events', '.view-sidebar', 'toggle');
+
+    $('.sidebar.menu .item')
+        .tab()
+    ;
+
+    if (serverAddress === "") {
+        serverAddress = window.location.host;
+    }
+
+});

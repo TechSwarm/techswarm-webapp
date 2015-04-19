@@ -10,7 +10,7 @@
     <script type="text/javascript" src="js/semantic.js"></script>
     <!-- Replace with optimised version BEFORE deployment! -->
 
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
     <script type="text/javascript" src="js/gmaps.js"></script>
 
     <script type="text/javascript" src="js/tswebapp.js"></script>
@@ -77,7 +77,7 @@
             <i class="space shuttle icon"></i>
 
             <div class="content">
-                <div class="title">Descend</div>
+                <div class="title">Descent</div>
                 <div class="description"></div>
             </div>
         </div>
@@ -102,18 +102,59 @@
 
 <div id="primary" class="pusher">
     <div class="content">
-        <div class="ui active tab" data-tab="dashboard">
-            <h1>Dashboard</h1>
+        <div class="ui active tab dashboard" data-tab="dashboard">
+            <div class="ui four column doubling equal width vertically divided grid">
+                <div class="row">
+                    <h1>Dashboard</h1>
+                </div>
+                <div class="row">
+                    <div class="column">
 
+                    </div>
+                    <div class="column">
 
+                    </div>
+                    <div class="column">
+
+                    </div>
+                    <div class="column">
+
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="ui tab" data-tab="telemetry">
-            <h1>Telemetry</h1>
+        <div class="ui tab telemetry" data-tab="telemetry">
+            <div class="ui one column vertically divided grid">
+                <div class="row">
+                    <h1>Telemetry</h1>
+                </div>
+                <div class="row">
+                    <div class="map" id="telemetry-gps"></div>
+                </div>
+                <div class="row">
+                    <div class="chart" id="telemetry-temp"></div>
+                </div>
+                <div class="row">
+                    <div class="chart" id="ddddddddd"></div>
+                </div>
+                <div class="row">
+                    <div class="chart" id="telemetry-pres"></div>
+                </div>
+                <div class="row">
+                    <div class="chart" id="telemetry-accel"></div>
+                </div>
+                <div class="row">
+                    <div class="chart" id="telemetry-magn"></div>
+                </div>
+                <div class="row">
+                    <div class="chart" id="telemetry-gyro"></div>
+                </div>
+            </div>
         </div>
-        <div class="ui tab" data-tab="planetary-data">
+        <div class="ui tab planetary-data" data-tab="planetary-data">
             <h1>Planetary data</h1>
         </div>
-        <div class="ui tab" data-tab="photos">
+        <div class="ui tab photos" data-tab="photos">
             <h1>Photos</h1>
         </div>
     </div>

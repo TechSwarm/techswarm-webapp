@@ -5,93 +5,160 @@ var serverAddress = ""; // if empty current server will be used
 var elements;
 elements = {
     temp: {
-        type: 'chart',
-        chartType: 'spline',
         title: "Temperature",
         valueSuffix: '°C',
-        container: 'telemetry-temp',
-        handle: {}
+        containers: [
+            {
+                type: 'chart',
+                chartType: 'spline',
+                id: 'telemetry-temp',
+                handle: {}
+            }
+        ]
     },
     humi: {
-        type: 'chart',
-        chartType: 'spline',
         title: "Humidity",
         valueSuffix: '%',
-        container: 'telemetry-humi',
-        handle: {}
+        containers: [
+            {
+                type: 'chart',
+                chartType: 'spline',
+                id: 'telemetry-humi',
+                handle: {}
+            }
+        ]
     },
     pres: {
-        type: 'chart',
-        chartType: 'spline',
         title: "Pressure",
         valueSuffix: 'hPa',
-        container: 'telemetry-pres',
-        handle: {}
+        containers: [
+            {
+                type: 'chart',
+                chartType: 'spline',
+                id: 'telemetry-pres',
+                handle: {}
+            }
+        ]
     },
     accel: {
-        type: 'chart',
-        chartType: 'spline',
         title: "Acceleration",
         valueSuffix: 'g',
-        container: 'telemetry-accel',
-        handle: {}
+        containers: [
+            {
+                type: 'chart',
+                chartType: 'spline',
+                id: 'telemetry-accel',
+                handle: {}
+            }
+        ]
     },
     magn: {
-        type: 'chart',
-        chartType: 'spline',
         title: "Magnetic field",
         valueSuffix: 'gauss',
-        container: 'telemetry-magn',
-        handle: {}
+        containers: [
+            {
+                type: 'chart',
+                chartType: 'spline',
+                id: 'telemetry-magn',
+                handle: {}
+            }
+        ]
     },
     gyro: {
-        type: 'chart',
-        chartType: 'spline',
         title: "Orientation",
         valueSuffix: '°',
-        container: 'telemetry-gyro',
-        handle: {}
+        containers: [
+            {
+                type: 'chart',
+                chartType: 'spline',
+                id: 'telemetry-gyro',
+                handle: {}
+            }
+        ]
     },
     gps: {
-        type: 'map',
         title: "Position",
-        container: 'telemetry-gps',
-        handle: {}
+        containers: [
+            {
+                type: 'map',
+                id: 'telemetry-gps',
+                handle: {}
+            }
+        ]
+    },
+    time: {
+        title: "Mission time",
+        containers: [
+            {
+                type: 'value',
+                id: 'dashboard-1-1'
+            }
+        ]
     }
 };
 
-function initialiseElement(name, data) {
+function updateElement(elementName, data) {
     "use strict";
-    if (elements[name].type === 'map') {
-        elements[name].Handler = new GMaps({
-            div: '#' + elements[name].container,
-            lat: 50.06222, //TODO: set this to current ground station position
-            lng: 19.928808  //
-        });
-    }
-    else if (elements[name].type === 'chart') {
-        elements[name].handle = new Highcharts.Chart({
-            chart: {
-                renderTo: elements[name].container,
-                type: elements[name].chartType
-            },
-            title: {
-                text: elements[name].title
-            },
-            credits: {
-                enabled: false
-            },
-            yAxis: {
-                labels: {
-                    format: '{value}' + elements[name].valueSuffix
-                }
-            },
-            tooltip: {
-                valueSuffix: elements[name].valueSuffix
-            },
-            series: data
-        });
-    }
+    $.each(elements[elementName].containers, function (key, container) {
+        if (container.type === 'map') {
+            //TODO: Add map updating with polyline drawing
+        }
+        else if (container.type === 'chart') {
+            //TODO: Add chart updating
+        }
+
+        else if (container.type === 'value') {
+            $('#' + container.id).html('<div class="ui statistic"><div class="label">' + elements[elementName].title + '</div><div class="value">' + data + '</div>');
+        }
+
+    });
+}
+
+function initialiseElement(elementName, data) {
+    "use strict";
+    $.each(elements[elementName].containers, function (key, container) {
+        if (container.type === 'map') {
+            container.handle = new GMaps({
+                div: '#' + container.id,
+                disableDefaultUI: true,
+                lat: 50.062203, //TODO: set this to current ground station position
+                lng: 19.928722  //
+            });
+            container.handle.addMarker({
+                lat: 50.062203,
+                lng: 19.928722,
+                title: 'Ground Station'
+            });
+        }
+        else if (container.type === 'chart') {
+            container.handle = new Highcharts.Chart({
+                chart: {
+                    renderTo: container.id,
+                    type: container.chartType
+                },
+                title: {
+                    text: elements[elementName].title
+                },
+                credits: {
+                    enabled: false
+                },
+                yAxis: {
+                    labels: {
+                        format: '{value}' + elements[elementName].valueSuffix
+                    }
+                },
+                tooltip: {
+                    valueSuffix: elements[elementName].valueSuffix
+                },
+                series: data
+            });
+        }
+        else if (container.type === 'value') {
+            console.log(1234);
+            $('#' + container.id).html('<div class="ui statistic"><div class="label">' + elements[elementName].title + '</div><div class="value">' + data + '</div>');
+        }
+
+    });
 }
 
 function setMissionPhase(phase) { // phase: 1 - Launch preparation, 2 - Launch, 3 - Descend, 4 - Ground operations, 5 - Mission complete
@@ -135,7 +202,7 @@ function setCansatStatus(status) { // status: 0 - Unknown , -1 - Offline, 1 - On
     }
 }
 
-$(document).ready(function () {
+function initialiseApp() {
     "use strict";
     $('#sidebar').sidebar({
         transition: 'overlay',
@@ -144,12 +211,31 @@ $(document).ready(function () {
     })
         .sidebar('attach events', '.view-sidebar', 'toggle');
 
-    $('.sidebar.menu .item')
-        .tab()
-    ;
+    $('.sidebar.menu .item').tab();
 
     if (serverAddress === "") {
         serverAddress = window.location.host;
     }
+}
+
+function AJAXemulation() { //emulates connecting to server!
+    "use strict"; //not only connect to non existing server but does it in strict mode!!!
+    setTimeout(function () {
+        setServerStatus(1);
+        setCansatStatus(1);
+        setMissionPhase(3);
+
+        $.each(elements, function (index, value) {
+            initialiseElement(index);
+        });
+
+    }, 2000);
+}
+
+$(document).ready(function () {
+    "use strict";
+    initialiseApp();
+
+    AJAXemulation();
 
 });

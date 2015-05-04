@@ -32,3 +32,5 @@ techswarm-webapp.iml
 
 # semantic builder
 semantic-ui/
+
+server/

@@ -54,4 +54,10 @@
   height: 400px !important;
   margin: 20px 0; }
 
+.statistics.ui .statistic > .value, .statistic.ui > .value {
+  text-transform: capitalize; }
+
+.centered {
+  text-align: center; }
+
 /*# sourceMappingURL=main.css.map */

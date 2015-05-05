@@ -3,16 +3,6 @@ var serverAddress = "http://127.0.0.1:1443/techswarm-webapp/server"; // if empty
 //CONFIG
 
 var serverURLs;
-serverURLs = {
-    status: "/status",
-    statusCurrent: "/status/current",
-    groundStation: "/gsinfo",
-    groundStationCurrent: "/gsinfo/current",
-    sensors: "/bulk/imu,sht,gps",
-    planetaryData: "/planetarydata",
-    photos: "/photos"
-};
-
 var time = 0;
 var lastUpdate = {
     status: new Date(0),
@@ -20,356 +10,68 @@ var lastUpdate = {
 };
 
 var elements;
-elements = {
-    temperature: {
-        title: "Temperature",
-        valueSuffix: '°C',
-        containers: [
-            {
-                type: 'chart',
-                chartType: 'spline',
-                id: 'telemetry-temp',
-                handle: {}
-            },
-            {
-                type: 'value',
-                id: 'dashboard-2-1'
-            }
-        ]
-    },
-    humidity: {
-        title: "Humidity",
-        valueSuffix: '%',
-        containers: [
-            {
-                type: 'chart',
-                chartType: 'spline',
-                id: 'telemetry-humi',
-                handle: {}
-            },
-            {
-                type: 'value',
-                id: 'dashboard-2-2'
-            }
-        ]
-    },
-    pressure: {
-        title: "Pressure",
-        valueSuffix: ' hPa',
-        containers: [
-            {
-                type: 'chart',
-                chartType: 'spline',
-                id: 'telemetry-pres',
-                handle: {}
-            },
-            {
-                type: 'value',
-                id: 'dashboard-2-3'
-            }
-        ]
-    },
-    accelX: {
-        title: "Acceleration X",
-        valueSuffix: ' g',
-        containers: [
-            {
-                type: 'value',
-                id: 'dashboard-3-1'
-            }
-        ]
-    },
-    accelY: {
-        title: "Acceleration Y",
-        valueSuffix: ' g',
-        containers: [
-            {
-                type: 'value',
-                id: 'dashboard-3-2'
-            }
-        ]
-    },
-    accelZ: {
-        title: "Acceleration Z",
-        valueSuffix: ' g',
-        containers: [
-            {
-                type: 'value',
-                id: 'dashboard-3-3'
-            }
-        ]
-    },
-    gyroX: {
-        title: "Orientation X",
-        valueSuffix: '°',
-        containers: [
-            {
-                type: 'value',
-                id: 'dashboard-4-1'
-            }
-        ]
-    },
-    gyroY: {
-        title: "Orientation Y",
-        valueSuffix: '°',
-        containers: [
-            {
-                type: 'value',
-                id: 'dashboard-4-2'
-            }
-        ]
-    },
-    gyroZ: {
-        title: "Orientation Z",
-        valueSuffix: '°',
-        containers: [
-            {
-                type: 'value',
-                id: 'dashboard-4-3'
-            }
-        ]
-    },
-    magnetX: {
-        title: "Magnetic field X",
-        valueSuffix: ' gauss',
-        containers: [
-            {
-                type: 'value',
-                id: 'dashboard-5-1'
-            }
-        ]
-    },
-    magnetY: {
-        title: "Magnetic field Y",
-        valueSuffix: ' gauss',
-        containers: [
-            {
-                type: 'value',
-                id: 'dashboard-5-2'
-            }
-        ]
-    },
-    magnetZ: {
-        title: "Magnetic field Z",
-        valueSuffix: ' gauss',
-        containers: [
-            {
-                type: 'value',
-                id: 'dashboard-5-3'
-            }
-        ]
-    },
-    /*accel: {
-        title: "Acceleration",
-        valueSuffix: 'g',
-        containers: [
-            {
-                type: 'chart',
-                chartType: 'spline',
-                id: 'telemetry-accel',
-                handle: {}
-            }
-        ]
-    },
-    magn: {
-        title: "Magnetic field",
-        valueSuffix: 'gauss',
-        containers: [
-            {
-                type: 'chart',
-                chartType: 'spline',
-                id: 'telemetry-magn',
-                handle: {}
-            }
-        ]
-    },
-    gyro: {
-        title: "Orientation",
-        valueSuffix: '°',
-        containers: [
-            {
-                type: 'chart',
-                chartType: 'spline',
-                id: 'telemetry-gyro',
-                handle: {}
-            }
-        ]
-    },
-    gps: {
-        title: "Position",
-        containers: [
-            {
-                type: 'map',
-                id: 'telemetry-gps',
-                handle: {}
-            }
-        ]
-    },*/
-    latitude: {
-        title: "Latitude",
-        valueSuffix: '°',
-        containers: [
-            {
-                type: 'value',
-                id: 'dashboard-6-1'
-            }
-        ]
-    },
-    longitude: {
-        title: "Longitude",
-        valueSuffix: '°',
-        containers: [
-            {
-                type: 'value',
-                id: 'dashboard-6-2'
-            }
-        ]
-    },
-    altitude: {
-        title: "Altitude",
-        valueSuffix: 'm',
-        containers: [
-            {
-                type: 'value',
-                id: 'dashboard-6-3'
-            }
-        ]
-    },
-    speedOverGround: {
-        title: "Speed over ground",
-        valueSuffix: 'm/s',
-        containers: [
-            {
-                type: 'value',
-                id: 'dashboard-7-1'
-            }
-        ]
-    },
-    direction: {
-        title: "Direction",
-        valueSuffix: '°',
-        containers: [
-            {
-                type: 'value',
-                id: 'dashboard-7-2'
-            }
-        ]
-    },
-    activeSatellites: {
-        title: "Active GPS satellites",
-        valueSuffix: '',
-        containers: [
-            {
-                type: 'value',
-                id: 'dashboard-7-3'
-            }
-        ]
-    },
-    fixType: {
-        title: "GPS fix",
-        valueSuffix: '',
-        containers: [
-            {
-                type: 'value',
-                id: 'dashboard-9-1'
-            }
-        ]
-    },
-    satellitesInView: {
-        title: "GPS satellites in view",
-        valueSuffix: '',
-        containers: [
-            {
-                type: 'value',
-                id: 'dashboard-9-2'
-            }
-        ]
-    },
-    pdop: {
-        title: "GPS positional dilution of precision",
-        valueSuffix: '',
-        containers: [
-            {
-                type: 'value',
-                id: 'dashboard-8-3'
-            }
-        ]
-    },
-    hdop: {
-        title: "GPS horizontal dilution of precision",
-        valueSuffix: '',
-        containers: [
-            {
-                type: 'value',
-                id: 'dashboard-8-1'
-            }
-        ]
-    },
-    vdop: {
-        title: "GPS vertical dilution of precision",
-        valueSuffix: '',
-        containers: [
-            {
-                type: 'value',
-                id: 'dashboard-8-2'
-            }
-        ]
-    },
-    quality: {
-        containers: []
-    },
-    timestamp: {
-        containers: []
-    },
+var staticData;
 
-    mtime: {
-        title: "Mission time",
-        event: {},
-        containers: [
-            {
-                type: 'value',
-                id: 'dashboard-1-1'
-            }
-        ]
-    },
-    mphase: {
-        title: "Phase",
-        containers: [
-            {
-                type: 'value',
-                id: 'dashboard-1-2'
-            },
-            {
-                type: 'phase_steps'
-            }
-        ]
-    },
-    lastUpdate: {
-        title: "Last update",
-        containers: [
-            {
-                type: 'value',
-                id: 'dashboard-1-3'
-            }
-        ]
-
-    },
-
-};
+//    /*accel: {
+//     title: "Acceleration",
+//     valueSuffix: 'g',
+//     containers: [
+//     {
+//     type: 'chart',
+//     chartType: 'spline',
+//     id: 'telemetry-accel',
+//     handle: {}
+//     }
+//     ]
+//     },
+//     magn: {
+//     title: "Magnetic field",
+//     valueSuffix: 'gauss',
+//     containers: [
+//     {
+//     type: 'chart',
+//     chartType: 'spline',
+//     id: 'telemetry-magn',
+//     handle: {}
+//     }
+//     ]
+//     },
+//     gyro: {
+//     title: "Orientation",
+//     valueSuffix: '°',
+//     containers: [
+//     {
+//     type: 'chart',
+//     chartType: 'spline',
+//     id: 'telemetry-gyro',
+//     handle: {}
+//     }
+//     ]
+//     },
+//     gps: {
+//     title: "Position",
+//     containers: [
+//     {
+//     type: 'map',
+//     id: 'telemetry-gps',
+//     handle: {}
+//     }
+//     ]
+//     },*/
 
 
-function updateStatus() {
+function getStatus() {
     "use strict";
-    $.getJSON(serverAddress + serverURLs.statusCurrent, function(json) {
+    $.getJSON(serverAddress + serverURLs.statusCurrent, function (json) {
         setServerStatus(1);
         setCansatStatus(Boolean(json.connected));
         updateElement('mphase', json.phase);
 
         var timestamp = new Date(json.timestamp);
 
-        if(Boolean(json.connected)) {
+        if (Boolean(json.connected)) {
             var now = new Date();
-            time = Math.floor(((now.getTime() - timestamp.getTime())/1000) + parseFloat(json.mission_time));
+            time = Math.floor(((now.getTime() - timestamp.getTime()) / 1000) + parseFloat(json.mission_time));
         } else {
             time = parseInt(json.mission_time);
         }
@@ -379,19 +81,28 @@ function updateStatus() {
             time++;
         }, 1000);
 
-        if(json.phase==='none' || json.phase==='launch_preparation' || json.phase==='mission_complete') {
+        if (json.phase === 'none' || json.phase === 'launch_preparation' || json.phase === 'mission_complete') {
             clearInterval(elements.mtime.event);
         }
 
         lastUpdate.status = timestamp;
 
     })
-        .fail(function() {
+        .fail(function () {
             setServerStatus(0);
             setCansatStatus(-1);
             updateElement('mphase', 'none');
             clearInterval(elements.mtime.event);
         });
+}
+
+function getPlanetaryData() {
+    "use strict";
+    $.getJSON(serverAddress + serverURLs.planetaryData, function (json) {
+        $.each(json[json.length - 1], function(key, value) {
+           updateElement(key, value);
+        });
+    });
 }
 
 function getTimeStampFromDate(date) {
@@ -401,14 +112,14 @@ function getTimeStampFromDate(date) {
 
 function getSensorData() {
     "use strict";
-    $.getJSON(serverAddress + serverURLs.sensors + '?since=' + getTimeStampFromDate(lastUpdate.sensors), function(json) {
-        $.each(json, function(sensorName, sensorData) {
-            $.each(sensorData, function(index, table) {
+    $.getJSON(serverAddress + serverURLs.sensors + '?since=' + getTimeStampFromDate(lastUpdate.sensors), function (json) {
+        $.each(json, function (sensorName, sensorData) {
+            $.each(sensorData, function (index, table) {
                 var timestamp = table.timestamp;
-                if((new Date(timestamp)).getTime()>lastUpdate.sensors.getTime()) {
+                if ((new Date(timestamp)).getTime() > lastUpdate.sensors.getTime()) {
                     lastUpdate.sensors = new Date(timestamp);
                 }
-                $.each(table, function(key, value) {
+                $.each(table, function (key, value) {
                     updateElement(key, value, timestamp);
                 });
             });
@@ -426,15 +137,22 @@ function updateElement(elementName, data, timestamp) {
                     //TODO: Add map updating with polyline drawing
                 }
                 else if (container.type === 'chart') {
-                    container.handle.series.addPoint()
+                    container.handle.series.addPoint();
                 }
 
                 else if (container.type === 'value') {
-                    var Valsuffix = elements[elementName].valueSuffix;
-                    if (Valsuffix === undefined) {
-                        Valsuffix = '';
+                    var text = ' – ';
+                    if (data !== undefined) {
+                        text = data.toString().replace('_', ' ');
+                        if (elements[elementName].valueSuffix !== undefined) {
+                            text += elements[elementName].valueSuffix;
+                        }
                     }
-                    $('#' + container.id).html('<div class="centered"><div class="ui small statistic"><div class="label">' + elements[elementName].title + '</div><div class="value">' + data.toString().replace('_', ' ') + Valsuffix + '</div></div>');
+                    $('#' + container.id).html('<div class="centered"><div class="ui small statistic"><div class="label">' + elements[elementName].title + '</div><div class="value">' + text + '</div></div>');
+                }
+
+                else if (container.type === 'image') {
+                    $('#' + container.id).html('<img src="' + serverAddress + serverURLs.photos + data + '">');
                 }
 
                 else if (container.type === 'phase_steps') {
@@ -466,10 +184,12 @@ function updateElement(elementName, data, timestamp) {
                     });
                 }
             }
-            catch (exception) {}
+            catch (exception) {
+            }
         });
     }
-    catch (exception) {}
+    catch (exception) {
+    }
 }
 
 function initialiseElement(elementName, data) {
@@ -566,12 +286,11 @@ function initialiseElement(elementName, data) {
 
             });
 
-        } else if (container.type === 'value') {
-            $('#' + container.id).html('<div class="ui statistic"><div class="label">' + elements[elementName].title + '</div><div class="value">' + data + '</div>');
         }
-
     });
 }
+
+
 
 function setServerStatus(status) { // status: -1 - Connecting, 0 - Connection failed, 1 - Connected
     "use strict";
@@ -597,13 +316,20 @@ function setCansatStatus(status) { // status: -1 - Unknown , 0 - Offline, 1 - On
     }
 }
 
+function loadStaticData() {
+    "use strict";
+    $.each(staticData, function(key, value) {
+       updateElement(key, value);
+    });
+}
+
 function gridPrinter(x, y, container) {
     "use strict";
-    var grid="";
-    for(var i = 1; i<=y; i++) {
+    var grid = "";
+    for (var i = 1; i <= y; i++) {
         grid += '<div class="row">';
-        for(var j = 1; j<=x; j++) {
-            grid += '<div class="column" id="' + container + '-' + i + '-' + j +'"></div>';
+        for (var j = 1; j <= x; j++) {
+            grid += '<div class="column" id="' + container + '-' + i + '-' + j + '"></div>';
         }
         grid += '</div>';
     }
@@ -611,6 +337,23 @@ function gridPrinter(x, y, container) {
 }
 
 function initialiseApp() {
+    "use strict";
+    loadStaticData();
+   getStatus();
+    getSensorData();
+}
+
+function getConfig() {
+    "use strict";
+    $.getJSON(serverAddress + '/webapp.config', function(json) {
+        serverURLs = json.serverURLs;
+        staticData = json.staticData;
+        elements = json.elements;
+        initialiseApp();
+    });
+}
+
+function initialisePage() {
     "use strict";
     $('#sidebar').sidebar({
         transition: 'overlay',
@@ -625,14 +368,12 @@ function initialiseApp() {
         serverAddress = window.location.host;
     }
     gridPrinter(3, 9, 'dashboard');
+    gridPrinter(3, 4, 'pdata');
+    getConfig();
 }
 
 
 $(document).ready(function () {
     "use strict";
-    initialiseApp();
-
-    updateStatus();
-
-    getSensorData();
+    initialisePage();
 });

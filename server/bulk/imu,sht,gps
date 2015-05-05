@@ -1,0 +1,46 @@
+{
+    "gps": [
+        {
+            "activeSatellites": 6,
+            "altitude": 167.0,
+            "direction": 45.0,
+            "fixType": "3d",
+            "hdop": 54.0,
+            "latitude": 50.062203,
+            "longitude": 19.928722,
+            "pdop": 65.0,
+            "quality": "gps",
+            "satellitesInView": 6,
+            "speedOverGround": 56.0,
+            "timestamp": "2015-06-04T10:21:54.000000",
+            "vdop": 43.0
+        }
+    ],
+    "imu": [
+        {
+            "accelX": 21,
+            "accelY": 32,
+            "accelZ": 54,
+            "gyroX": 43,
+            "gyroY": 54,
+            "gyroZ": 65,
+            "magnetX": 65,
+            "magnetY": 32,
+            "magnetZ": 56,
+            "pressure": 43,
+            "timestamp": "2015-06-04T10:21:54.000000"
+        }
+    ],
+    "sht": [
+        {
+            "humidity": 34.0,
+            "temperature": 3.0,
+            "timestamp": "2015-06-04T10:21:54.000000"
+        },
+        {
+            "humidity": 33.0,
+            "temperature": 4.0,
+            "timestamp": "2015-06-04T10:21:55.000000"
+        }
+    ]
+}

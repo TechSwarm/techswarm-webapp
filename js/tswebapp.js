@@ -6,59 +6,12 @@ var serverURLs;
 var time = 0;
 var lastUpdate = {
     status: new Date(0),
-    sensors: new Date(0)
+    sensors: new Date(0),
+    planetaryData: new Date(0)
 };
 
 var elements;
 var staticData;
-
-//    /*accel: {
-//     title: "Acceleration",
-//     valueSuffix: 'g',
-//     containers: [
-//     {
-//     type: 'chart',
-//     chartType: 'spline',
-//     id: 'telemetry-accel',
-//     handle: {}
-//     }
-//     ]
-//     },
-//     magn: {
-//     title: "Magnetic field",
-//     valueSuffix: 'gauss',
-//     containers: [
-//     {
-//     type: 'chart',
-//     chartType: 'spline',
-//     id: 'telemetry-magn',
-//     handle: {}
-//     }
-//     ]
-//     },
-//     gyro: {
-//     title: "Orientation",
-//     valueSuffix: '°',
-//     containers: [
-//     {
-//     type: 'chart',
-//     chartType: 'spline',
-//     id: 'telemetry-gyro',
-//     handle: {}
-//     }
-//     ]
-//     },
-//     gps: {
-//     title: "Position",
-//     containers: [
-//     {
-//     type: 'map',
-//     id: 'telemetry-gps',
-//     handle: {}
-//     }
-//     ]
-//     },*/
-
 
 function getStatus() {
     "use strict";
@@ -98,7 +51,8 @@ function getStatus() {
 
 function getPlanetaryData() {
     "use strict";
-    $.getJSON(serverAddress + serverURLs.planetaryData, function (json) {
+    $.getJSON(serverAddress + serverURLs.planetaryData + '?since=' + getTimeStampFromDate(lastUpdate.planetaryData), function (json) {
+        lastUpdate.planetaryData = new Date(json[json.length - 1].timestamp);
         $.each(json[json.length - 1], function(key, value) {
            updateElement(key, value);
         });
@@ -107,6 +61,7 @@ function getPlanetaryData() {
 
 function getTimeStampFromDate(date) {
     "use strict";
+    date.setMilliseconds(date.getMilliseconds() + 1);
     return "" + date.toISOString().replace('Z', '');
 }
 
@@ -133,66 +88,75 @@ function updateElement(elementName, data, timestamp) {
     try {
         $.each(elements[elementName].containers, function (key, container) {
             try {
-                if (container.type === 'map') {
-                    //TODO: Add map updating with polyline drawing
-                }
-                else if (container.type === 'chart') {
-                    container.handle.series.addPoint();
-                }
-
-                else if (container.type === 'value') {
-                    var text = ' – ';
-                    if (data !== undefined) {
-                        text = data.toString().replace('_', ' ');
-                        if (elements[elementName].valueSuffix !== undefined) {
-                            text += elements[elementName].valueSuffix;
-                        }
-                    }
-                    $('#' + container.id).html('<div class="centered"><div class="ui small statistic"><div class="label">' + elements[elementName].title + '</div><div class="value">' + text + '</div></div>');
-                }
-
-                else if (container.type === 'image') {
-                    $('#' + container.id).html('<img src="' + serverAddress + serverURLs.photos + data + '">');
-                }
-
-                else if (container.type === 'phase_steps') {
-                    var phaseNumber = 0;
-                    if (data === 'launch_preparation') {
-                        phaseNumber = 1;
-                    } else if (data === 'launch' || phase === 'countdown') {
-                        phaseNumber = 2;
-                    } else if (data === 'descend') {
-                        phaseNumber = 3;
-                    } else if (data === 'ground_operations') {
-                        phaseNumber = 4;
-                    } else if (data === 'mission_complete') {
-                        phaseNumber = 5;
-                    }
-
-                    var i = 1;
-                    $('#mission-phase').find('> div').each(function () {
-                        if (i < phaseNumber) {
-                            $(this).removeClass("disabled active");
-                        }
-                        else if (i === phaseNumber) {
-                            $(this).addClass("active").removeClass("disabled");
-                        }
-                        else {
-                            $(this).removeClass("active").addClass("disabled");
-                        }
-                        i++;
-                    });
-                }
+            if (container.type === 'map') {
+                //TODO: Add map updating with polyline drawing
+                console.log('not implemented');
             }
-            catch (exception) {
+            else if (container.type === 'chart') {
+                var chart = $('#' + container.id);
+                if (chart.highcharts() === undefined) {
+                    initialiseElement(elementName);
+                }
+                if (container.series === undefined) {
+                    chart.highcharts().addSeries({
+                        name: container.seriesName,
+                        type: container.chartType,
+                        data: []
+                    }, true, false);
+                    container.series = chart.highcharts().series.length - 1;
+                }
+                chart.highcharts().series[container.series].addPoint([(new Date(timestamp)).getTime(), data], true, false);
             }
+
+            else if (container.type === 'value') {
+                var text = ' – ';
+                if (data !== undefined) {
+                    text = data.toString().replace('_', ' ');
+                    if (elements[elementName].valueSuffix !== undefined) {
+                        text += elements[elementName].valueSuffix;
+                    }
+                }
+                $('#' + container.id).html('<div class="centered"><div class="ui small statistic"><div class="label">' + elements[elementName].title + '</div><div class="value">' + text + '</div></div>');
+            }
+
+            else if (container.type === 'image') {
+                $('#' + container.id).html('<img src="' + serverAddress + serverURLs.photos + data + '">');
+            }
+
+            else if (container.type === 'phase_steps') {
+                var phaseNumber = 0;
+                if (data === 'launch_preparation') {
+                    phaseNumber = 1;
+                } else if (data === 'launch' || phase === 'countdown') {
+                    phaseNumber = 2;
+                } else if (data === 'descend') {
+                    phaseNumber = 3;
+                } else if (data === 'ground_operations') {
+                    phaseNumber = 4;
+                } else if (data === 'mission_complete') {
+                    phaseNumber = 5;
+                }
+
+                var i = 1;
+                $('#mission-phase').find('> div').each(function () {
+                    if (i < phaseNumber) {
+                        $(this).removeClass("disabled active");
+                    }
+                    else if (i === phaseNumber) {
+                        $(this).addClass("active").removeClass("disabled");
+                    }
+                    else {
+                        $(this).removeClass("active").addClass("disabled");
+                    }
+                    i++;
+                });
+            }
+          } catch (exception) {console.log(exception);}
         });
-    }
-    catch (exception) {
-    }
+    } catch (exception) {}
 }
 
-function initialiseElement(elementName, data) {
+function initialiseElement(elementName) {
     "use strict";
     $.each(elements[elementName].containers, function (key, container) {
         if (container.type === 'map') {
@@ -208,84 +172,35 @@ function initialiseElement(elementName, data) {
                 title: 'Ground Station'
             });
         } else if (container.type === 'chart') {
-            container.handle = new Highcharts.Chart({
+            $('#' + container.id).highcharts({
                 chart: {
-                    renderTo: container.id,
                     type: container.chartType
                 },
                 title: {
-                    text: elements[elementName].title
+                    text: container.chartName
                 },
                 credits: {
                     enabled: false
                 },
+                legend: {
+                    enabled: container.legend
+                },
                 yAxis: {
+                    title: {
+                        text: null
+                    },
                     labels: {
                         format: '{value}' + elements[elementName].valueSuffix
                     }
                 },
+                xAxis: {
+                    type: 'datetime'
+                },
                 tooltip: {
                     valueSuffix: elements[elementName].valueSuffix
                 },
-                series: data
+                series: []
             });
-        } else if (container.type === 'gauge') {
-            container.handle = new Highcharts.Chart({
-                chart: {
-                    renderTo: container.id,
-                    type: 'solidgauge'
-                },
-                title: {
-                    text: elements[elementName].title
-                },
-                pane: {
-                    center: ['50%', '85%'],
-                    size: '140%',
-                    startAngle: -90,
-                    endAngle: 90,
-                    background: {
-                        backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
-                        innerRadius: '60%',
-                        outerRadius: '100%',
-                        shape: 'arc'
-                    }
-                },
-                tooltip: {
-                    enabled: false
-                },
-                credits: {
-                    enabled: false
-                },
-                yAxis: {
-                    stops: [
-                        [0.1, '#55BF3B'], // green
-                        [0.5, '#DDDF0D'], // yellow
-                        [0.9, '#DF5353'] // red
-                    ],
-                    lineWidth: 0,
-                    minorTickInterval: null,
-                    tickPixelInterval: 400,
-                    tickWidth: 0,
-                    title: {
-                        y: -70
-                    },
-                    labels: {
-                        y: 16
-                    }
-                },
-                lotOptions: {
-                    solidgauge: {
-                        dataLabels: {
-                            y: 5,
-                            borderWidth: 0,
-                            useHTML: true
-                        }
-                    }
-                }
-
-
-            });
-
         }
     });
 }
@@ -339,8 +254,9 @@ function gridPrinter(x, y, container) {
 function initialiseApp() {
     "use strict";
     loadStaticData();
-   getStatus();
+    getStatus();
     getSensorData();
+    getPlanetaryData();
 }
 
 function getConfig() {
@@ -362,13 +278,18 @@ function initialisePage() {
     })
         .sidebar('attach events', '.view-sidebar', 'toggle');
 
-    $('.sidebar.menu .item').tab();
+    $('.sidebar.menu .item').tab({
+        onTabLoad: function () {
+            $(window).trigger('resize');
+        }
+    });
 
     if (serverAddress === "") {
         serverAddress = window.location.host;
     }
     gridPrinter(3, 9, 'dashboard');
     gridPrinter(3, 4, 'pdata');
+    gridPrinter(1, 7, 'telemetry');
     getConfig();
 }
 

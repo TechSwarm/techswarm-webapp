@@ -12,6 +12,15 @@ var lastUpdate = {
 
 var elements;
 var staticData;
+var mapHandles = {
+    maps: {},
+    markers: {},
+    lastLocations: []
+};
+var nextLoaction = {
+    latitude: null,
+    longitude: null
+};
 
 function getStatus() {
     "use strict";
@@ -65,6 +74,13 @@ function getTimeStampFromDate(date) {
     return "" + date.toISOString().replace('Z', '');
 }
 
+function getGroundStationLocation() {
+    "use strict";
+    $.getJSON(serverAddress + serverURLs.groundStationCurrent, function(json) {
+        updateElement('groundStation', new google.maps.LatLng(json.latitude, json.longitude));
+    });
+}
+
 function getSensorData() {
     "use strict";
     $.getJSON(serverAddress + serverURLs.sensors + '?since=' + getTimeStampFromDate(lastUpdate.sensors), function (json) {
@@ -75,6 +91,9 @@ function getSensorData() {
                     lastUpdate.sensors = new Date(timestamp);
                 }
                 $.each(table, function (key, value) {
+                    if(key === 'longitude' || key === 'latitude') {
+                        setCanSatLocation(key, value);
+                    }
                     updateElement(key, value, timestamp);
                 });
             });
@@ -83,14 +102,60 @@ function getSensorData() {
     });
 }
 
+function setCanSatLocation(key, value) {
+    "use strict";
+    nextLoaction[key] = value;
+    if (nextLoaction.latitude !== null && nextLoaction.longitude !== null) {
+        updateElement('canSatLocation', new google.maps.LatLng(nextLoaction.latitude, nextLoaction.longitude));
+        nextLoaction.latitude = null; nextLoaction.longitude = null;
+    }
+}
+
 function updateElement(elementName, data, timestamp) {
     "use strict";
     try {
         $.each(elements[elementName].containers, function (key, container) {
             try {
             if (container.type === 'map') {
-                //TODO: Add map updating with polyline drawing
-                console.log('not implemented');
+                if (mapHandles.maps[container.id] === undefined) {
+                    initialiseElement(elementName);
+                }
+
+                if(container.panTo === true) {
+                    mapHandles.maps[container.id].panTo(data);
+                    mapHandles.maps[container.id].MapCenter = data;
+                    mapHandles.maps[container.id].setZoom(10);
+                }
+
+                if (container.mapObject==='marker') {
+                    if(mapHandles.markers[elementName + container.id] === undefined) {
+                        mapHandles.markers[elementName + container.id] = new google.maps.Marker({
+                            position: data,
+                            map: mapHandles.maps[container.id],
+                            icon: {
+                                url: container.markerIcon//,
+                            }
+                        });
+                    } else {
+                        mapHandles.markers[elementName + container.id].setPosition(data);
+                    }
+
+                } else if (container.mapObject==='polyline') {
+                    if(mapHandles.lastLocations[elementName + container.id] !== undefined) {
+                        var polyLine = new google.maps.Polyline({
+                            path: [
+                                mapHandles.lastLocations[elementName + container.id],
+                                data
+                            ],
+                            geodesic: true,
+                            strokeColor: container.lineColor,
+                            strokeOpacity: 1.0,
+                            strokeWeight: 2
+                        });
+                        polyLine.setMap(mapHandles.maps[container.id]);
+                    }
+                    mapHandles.lastLocations[elementName + container.id] = data;
+                }
             }
             else if (container.type === 'chart') {
                 var chart = $('#' + container.id);
@@ -151,7 +216,7 @@ function updateElement(elementName, data, timestamp) {
                     i++;
                 });
             }
-          } catch (exception) {console.log(exception);}
+          } catch (exception) {console.log(elementName); console.log(exception);}
         });
     } catch (exception) {}
 }
@@ -160,17 +225,13 @@ function initialiseElement(elementName) {
     "use strict";
     $.each(elements[elementName].containers, function (key, container) {
         if (container.type === 'map') {
-            container.handle = new GMaps({
-                div: '#' + container.id,
-                disableDefaultUI: true,
-                lat: 50.062203, //TODO: set this to current ground station position
-                lng: 19.928722  //
+            $('#' + container.id).height('400px');
+            mapHandles.maps[container.id] = new google.maps.Map(document.getElementById(container.id), {
+               zoom: 1,
+               center: new google.maps.LatLng(50.062203, 19.928722),
+               disableDefaultUI: true
             });
-            container.handle.addMarker({
-                lat: 50.062203,
-                lng: 19.928722,
-                title: 'Ground Station'
-            });
+            container.map = mapHandles.maps.length - 1;
         } else if (container.type === 'chart') {
             $('#' + container.id).highcharts({
                 chart: {
@@ -257,6 +318,7 @@ function initialiseApp() {
     getStatus();
     getSensorData();
     getPlanetaryData();
+    getGroundStationLocation();
 }
 
 function getConfig() {
@@ -280,7 +342,12 @@ function initialisePage() {
 
     $('.sidebar.menu .item').tab({
         onTabLoad: function () {
+            $('#sidebar').sidebar('toggle');
             $(window).trigger('resize');
+            $.each(mapHandles.maps, function(key, value) {
+                google.maps.event.trigger(value, 'resize');
+                value.panTo(value.MapCenter);
+            });
         }
     });
 

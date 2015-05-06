@@ -14,6 +14,21 @@
             "speedOverGround": 56.0,
             "timestamp": "2015-06-04T10:21:54.000000",
             "vdop": 43.0
+        },
+        {
+            "activeSatellites": 2,
+            "altitude": 34.0,
+            "direction": 56.0,
+            "fixType": "3d",
+            "hdop": 45.0,
+            "latitude": 50.162203,
+            "longitude": 19.828722,
+            "pdop": 454.0,
+            "quality": "gps",
+            "satellitesInView": 4,
+            "speedOverGround": 34.0,
+            "timestamp": "2015-06-04T10:21:55.000000",
+            "vdop": 4.0
         }
     ],
     "imu": [

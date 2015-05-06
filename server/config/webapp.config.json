@@ -1,0 +1,480 @@
+{
+  "elements": {
+    "temperature": {
+      "title": "Temperature",
+      "valueSuffix": "°C",
+      "containers": [
+        {
+          "type": "chart",
+          "chartType": "spline",
+          "chartName": "Temperature",
+          "seriesName": "Temperature",
+          "legend": false,
+          "id": "telemetry-1-1"
+        },
+        {
+          "type": "value",
+          "id": "dashboard-2-1"
+        }
+      ]
+    },
+    "humidity": {
+      "title": "Humidity",
+      "valueSuffix": "%",
+      "containers": [
+        {
+          "type": "chart",
+          "chartName": "Humidity",
+          "chartType": "spline",
+          "seriesName": "Humidity",
+          "legend": false,
+          "id": "telemetry-3-1"
+        },
+        {
+          "type": "value",
+          "id": "dashboard-2-2"
+        }
+      ]
+    },
+    "pressure": {
+      "title": "Pressure",
+      "valueSuffix": " hPa",
+      "containers": [
+        {
+          "type": "chart",
+          "chartType": "spline",
+          "chartName": "Pressure",
+          "seriesName": "Pressure",
+          "legend": false,
+          "id": "telemetry-2-1"
+        },
+        {
+          "type": "value",
+          "id": "dashboard-2-3"
+        }
+      ]
+    },
+    "accelX": {
+      "title": "Acceleration X",
+      "valueSuffix": " g",
+      "containers": [
+        {
+          "type": "chart",
+          "chartType": "spline",
+          "chartName": "Acceleration",
+          "seriesName": "X",
+          "legend": true,
+          "id": "telemetry-4-1"
+        },
+        {
+          "type": "value",
+          "id": "dashboard-3-1"
+        }
+      ]
+    },
+    "accelY": {
+      "title": "Acceleration Y",
+      "valueSuffix": " g",
+      "containers": [
+        {
+          "type": "chart",
+          "chartType": "spline",
+          "chartName": "Acceleration",
+          "seriesName": "Y",
+          "legend": true,
+          "id": "telemetry-4-1"
+        },
+        {
+          "type": "value",
+          "id": "dashboard-3-2"
+        }
+      ]
+    },
+    "accelZ": {
+      "title": "Acceleration Z",
+      "valueSuffix": " g",
+      "containers": [
+        {
+          "type": "chart",
+          "chartType": "spline",
+          "chartName": "Acceleration",
+          "seriesName": "Z",
+          "legend": true,
+          "id": "telemetry-4-1"
+        },
+        {
+          "type": "value",
+          "id": "dashboard-3-3"
+        }
+      ]
+    },
+    "gyroX": {
+      "title": "Orientation X",
+      "valueSuffix": "°",
+      "containers": [
+        {
+          "type": "chart",
+          "chartType": "spline",
+          "chartName": "Orientation",
+          "seriesName": "X",
+          "legend": true,
+          "id": "telemetry-5-1"
+        },
+        {
+          "type": "value",
+          "id": "dashboard-4-1"
+        }
+      ]
+    },
+    "gyroY": {
+      "title": "Orientation Y",
+      "valueSuffix": "°",
+      "containers": [
+        {
+          "type": "chart",
+          "chartType": "spline",
+          "chartName": "Orientation",
+          "seriesName": "Y",
+          "legend": true,
+          "id": "telemetry-5-1"
+        },
+        {
+          "type": "value",
+          "id": "dashboard-4-2"
+        }
+      ]
+    },
+    "gyroZ": {
+      "title": "Orientation Z",
+      "valueSuffix": "°",
+      "containers": [
+        {
+          "type": "chart",
+          "chartType": "spline",
+          "chartName": "Orientation",
+          "seriesName": "Z",
+          "legend": true,
+          "id": "telemetry-5-1"
+        },
+        {
+          "type": "value",
+          "id": "dashboard-4-3"
+        }
+      ]
+    },
+    "magnetX": {
+      "title": "Magnetic field X",
+      "valueSuffix": " gauss",
+      "containers": [
+        {
+          "type": "chart",
+          "chartType": "spline",
+          "chartName": "Magnetic field",
+          "seriesName": "X",
+          "legend": true,
+          "id": "telemetry-6-1"
+        },
+        {
+          "type": "value",
+          "id": "dashboard-5-1"
+        }
+      ]
+    },
+    "magnetY": {
+      "title": "Magnetic field Y",
+      "valueSuffix": " gauss",
+      "containers": [
+        {
+          "type": "chart",
+          "chartType": "spline",
+          "chartName": "Magnetic field",
+          "seriesName": "Y",
+          "legend": true,
+          "id": "telemetry-6-1"
+        },
+        {
+          "type": "value",
+          "id": "dashboard-5-2"
+        }
+      ]
+    },
+    "magnetZ": {
+      "title": "Magnetic field Z",
+      "valueSuffix": " gauss",
+      "containers": [
+        {
+          "type": "chart",
+          "chartType": "spline",
+          "chartName": "Magnetic field",
+          "seriesName": "Z",
+          "legend": true,
+          "id": "telemetry-6-1"
+        },
+        {
+          "type": "value",
+          "id": "dashboard-5-3"
+        }
+      ]
+    },
+    "latitude": {
+      "title": "Latitude",
+      "valueSuffix": "°",
+      "containers": [
+        {
+          "type": "value",
+          "id": "dashboard-6-1"
+        }
+      ]
+    },
+    "longitude": {
+      "title": "Longitude",
+      "valueSuffix": "°",
+      "containers": [
+        {
+          "type": "value",
+          "id": "dashboard-6-2"
+        }
+      ]
+    },
+    "altitude": {
+      "title": "Altitude",
+      "valueSuffix": "m",
+      "containers": [
+        {
+          "type": "value",
+          "id": "dashboard-6-3"
+        }
+      ]
+    },
+    "speedOverGround": {
+      "title": "Speed over ground",
+      "valueSuffix": "m/s",
+      "containers": [
+        {
+          "type": "value",
+          "id": "dashboard-7-1"
+        }
+      ]
+    },
+    "direction": {
+      "title": "Direction",
+      "valueSuffix": "°",
+      "containers": [
+        {
+          "type": "value",
+          "id": "dashboard-7-2"
+        }
+      ]
+    },
+    "activeSatellites": {
+      "title": "Active GPS satellites",
+      "valueSuffix": "",
+      "containers": [
+        {
+          "type": "value",
+          "id": "dashboard-7-3"
+        }
+      ]
+    },
+    "fixType": {
+      "title": "GPS fix",
+      "valueSuffix": "",
+      "containers": [
+        {
+          "type": "value",
+          "id": "dashboard-9-1"
+        }
+      ]
+    },
+    "satellitesInView": {
+      "title": "GPS satellites in view",
+      "valueSuffix": "",
+      "containers": [
+        {
+          "type": "value",
+          "id": "dashboard-9-2"
+        }
+      ]
+    },
+    "pdop": {
+      "title": "GPS positional dilution of precision",
+      "valueSuffix": "",
+      "containers": [
+        {
+          "type": "value",
+          "id": "dashboard-8-3"
+        }
+      ]
+    },
+    "hdop": {
+      "title": "GPS horizontal dilution of precision",
+      "valueSuffix": "",
+      "containers": [
+        {
+          "type": "value",
+          "id": "dashboard-8-1"
+        }
+      ]
+    },
+    "vdop": {
+      "title": "GPS vertical dilution of precision",
+      "valueSuffix": "",
+      "containers": [
+        {
+          "type": "value",
+          "id": "dashboard-8-2"
+        }
+      ]
+    },
+    "mtime": {
+      "title": "Mission time",
+      "valueSuffix": "s",
+      "containers": [
+        {
+          "type": "value",
+          "id": "dashboard-1-1"
+        }
+      ]
+    },
+    "mphase": {
+      "title": "Phase",
+      "containers": [
+        {
+          "type": "value",
+          "id": "dashboard-1-2"
+        },
+        {
+          "type": "phase_steps"
+        }
+      ]
+    },
+    "lastUpdate": {
+      "title": "Last update",
+      "containers": [
+        {
+          "type": "value",
+          "id": "dashboard-1-3"
+        }
+      ]
+    },
+    "planetName": {
+      "title": "Planet name",
+      "containers": [
+        {
+          "type": "value",
+          "id": "pdata-1-2"
+        }
+      ]
+    },
+    "planetImage": {
+      "title": "",
+      "containers": [
+        {
+          "type": "image",
+          "id": "pdata-1-1"
+        }
+      ]
+    },
+    "planetLocation": {
+      "title": "Location",
+      "containers": [
+        {
+          "type": "value",
+          "id": "pdata-1-3"
+        }
+      ]
+    },
+    "earthSimilarityIndex": {
+      "title": "Earth Similarity Index",
+      "containers": [
+        {
+          "type": "value",
+          "id": "pdata-2-1"
+        }
+      ]
+    },
+    "planetMass": {
+      "title": "Planet mass",
+      "containers": [
+        {
+          "type": "value",
+          "id": "pdata-2-2"
+        }
+      ]
+    },
+    "planetRadius": {
+      "title": "Planet radius",
+      "containers": [
+        {
+          "type": "value",
+          "id": "pdata-2-3"
+        }
+      ]
+    },
+    "planetDensity": {
+      "title": "Planet density",
+      "containers": [
+        {
+          "type": "value",
+          "id": "pdata-3-1"
+        }
+      ]
+    },
+    "escapeVelocity": {
+      "title": "Escape velocity",
+      "containers": [
+        {
+          "type": "value",
+          "id": "pdata-3-2"
+        }
+      ]
+    },
+    "groundStation": {
+      "title": "Ground station location",
+      "containers": [
+        {
+          "type": "map",
+          "id": "telemetry-7-1",
+          "mapObject": "marker",
+          "markerIcon": "gstation.png"
+        }
+      ]
+    },
+    "canSatLocation": {
+      "title": "CanSat location",
+      "containers": [
+        {
+          "type": "map",
+          "id": "telemetry-7-1",
+          "mapObject": "marker",
+          "markerIcon": "cansat.png",
+          "panTo": true
+        },
+        {
+          "type": "map",
+          "id": "telemetry-7-1",
+          "mapObject": "polyline",
+          "lineColor": "#307BEA"
+        }
+      ]
+    }
+  },
+
+  "serverURLs": {
+    "status": "/status",
+    "statusCurrent": "/status/current",
+    "groundStation": "/gsinfo",
+    "groundStationCurrent": "/gsinfo/current",
+    "sensors": "/bulk/imu,sht,gps",
+    "planetaryData": "/planetarydata",
+    "photos": "/photos/"
+  },
+
+  "staticData": {
+    "planetName": "Earth",
+    "planetImage": "/config/earth.jpg",
+    "planetLocation": "Solar System"
+  },
+
+  "startTab": "dashboard"
+}

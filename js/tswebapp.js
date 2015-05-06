@@ -4,25 +4,29 @@ var serverAddress = "http://api.techswarm.org"; // if empty current server will 
 
 var serverURLs;
 var time = 0;
-var lastUpdate = {
+var lastUpdate;
+lastUpdate = {
     status: new Date(0),
     sensors: new Date(0),
     planetaryData: new Date(0)
 };
 
-var status = {
+var systemStatus;
+systemStatus = {
     connected: false,
     online: false
 };
 var elements;
 var startTab;
 var staticData;
-var mapHandles = {
+var mapHandles;
+mapHandles = {
     maps: {},
     markers: {},
     lastLocations: []
 };
-var nextLoaction = {
+var nextLoaction;
+nextLoaction = {
     latitude: null,
     longitude: null
 };
@@ -38,8 +42,8 @@ function getStatus() {
         setServerStatus(1);
         setCansatStatus(Boolean(json.connected) ? 1 : 0);
 
-        status.connected = true;
-        status.online = Boolean(json.connected);
+        systemStatus.connected = true;
+        systemStatus.online = Boolean(json.connected);
 
         updateElement('mphase', json.phase);
 
@@ -47,8 +51,8 @@ function getStatus() {
 
         if (Boolean(json.connected)) {
             var now = new Date();
-            if(Math.abs(time - Math.floor(((now.getTime() - timestamp.getTime()) / 1000)) + parseFloat(json.mission_time)) > 5) {
-                time = Math.floor(((now.getTime() - timestamp.getTime()) / 1000)) + parseFloat(json.mission_time);
+            if(Math.abs(time - Math.floor(((now.getTime() - timestamp.getTime()) / 1000)) + json.missionTime) > 5) {
+                time = Math.floor(((now.getTime() - timestamp.getTime()) / 1000)) + json.missionTime;
             }
 
             if ((json.phase === 'none' || json.phase === 'launch_preparation' || json.phase === 'mission_complete') && elements.mtime.event !== undefined) {
@@ -63,7 +67,7 @@ function getStatus() {
                 }, 1000);
             }
         } else {
-            time = parseFloat(json.mission_time);
+            time = json.missionTime;
             updateElement('mtime', time);
         }
 
@@ -75,18 +79,20 @@ function getStatus() {
             updateElement('mphase', 'none');
             clearInterval(elements.mtime.event);
             elements.mtime.event = undefined;
-            status.connected = false;
-            status.online = false;
+            systemStatus.connected = false;
+            systemStatus.online = false;
         });
 }
 
 function getPlanetaryData() {
     "use strict";
     $.getJSON(serverAddress + serverURLs.planetaryData + '?since=' + getTimeStampFromDate(lastUpdate.planetaryData), function (json) {
-        lastUpdate.planetaryData = new Date(json[json.length - 1].timestamp);
-        $.each(json[json.length - 1], function (key, value) {
-            updateElement(key, value);
-        });
+        if(json.length > 0) {
+            lastUpdate.planetaryData = new Date(json[json.length - 1].timestamp);
+            $.each(json[json.length - 1], function (key, value) {
+                updateElement(key, value);
+            });
+        }
     });
 }
 
@@ -214,7 +220,7 @@ function updateElement(elementName, data, timestamp) {
                 }
 
                 else if (container.type === 'image') {
-                    $('#' + container.id).html('<img src="' + serverAddress + data + '">');
+                    $('#' + container.id).html('<img class="shadow-img" src="' + serverAddress + data + '">');
                 }
 
                 else if (container.type === 'phase_steps') {
@@ -351,7 +357,7 @@ function initialiseApp() {
     getStatus();
 
     setTimeout(function() {
-        if(status.connected) {
+        if(systemStatus.connected) {
             getPlanetaryData();
             getGroundStationLocation();
             getSensorData();
@@ -360,7 +366,7 @@ function initialiseApp() {
         }
         setInterval(function() {
             getStatus();
-            if(status.connected) {
+            if(systemStatus.connected) {
                 getPlanetaryData();
                 getGroundStationLocation();
                 getSensorData();
@@ -383,8 +389,8 @@ function getConfig() {
         setServerStatus(0);
         setCansatStatus(-1);
         updateElement('mphase', 'none');
-        status.connected = false;
-        status.online = false;
+        systemStatus.connected = false;
+        systemStatus.online = false;
     });
 }
 

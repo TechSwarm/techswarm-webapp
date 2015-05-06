@@ -55,7 +55,9 @@
   margin: 20px 0; }
 
 .statistics.ui .statistic > .value, .statistic.ui > .value {
-  text-transform: capitalize; }
+  text-transform: none;
+  white-space: nowrap;
+}
 
 .centered {
   text-align: center; }

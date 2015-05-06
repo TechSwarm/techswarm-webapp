@@ -238,7 +238,7 @@
     },
     "altitude": {
       "title": "Altitude",
-      "valueSuffix": "m",
+      "valueSuffix": " m",
       "containers": [
         {
           "type": "value",
@@ -248,7 +248,7 @@
     },
     "speedOverGround": {
       "title": "Speed over ground",
-      "valueSuffix": "m/s",
+      "valueSuffix": " km/h",
       "containers": [
         {
           "type": "value",
@@ -272,7 +272,7 @@
       "containers": [
         {
           "type": "value",
-          "id": "dashboard-7-3"
+          "id": "dashboard-9-1"
         }
       ]
     },
@@ -282,7 +282,7 @@
       "containers": [
         {
           "type": "value",
-          "id": "dashboard-9-1"
+          "id": "dashboard-7-3"
         }
       ]
     },
@@ -328,7 +328,7 @@
     },
     "mtime": {
       "title": "Mission time",
-      "valueSuffix": "s",
+      "valueSuffix": " s",
       "containers": [
         {
           "type": "value",

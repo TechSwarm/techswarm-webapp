@@ -31,6 +31,7 @@ nextLoaction = {
     latitude: null,
     longitude: null
 };
+var chartsToRedraw = {};
 
 function M4TXtimestampToDate(timestamp) {
     "use strict";
@@ -141,6 +142,7 @@ function getSensorData() {
             });
         });
         updateElement('lastUpdate', lastUpdate.sensors.getHours() + ':' + lastUpdate.sensors.getMinutes() + ':' + lastUpdate.sensors.getSeconds());
+        redrawCharts();
     });
 }
 
@@ -152,6 +154,16 @@ function setCanSatLocation(key, value) {
         nextLoaction.latitude = null;
         nextLoaction.longitude = null;
     }
+}
+
+function redrawCharts() {
+    "use strict";
+    $.each(chartsToRedraw, function (key, value) {
+        if(value === true) {
+            $('#' + key).highcharts().redraw();
+            chartsToRedraw[key] = false;
+        }
+    });
 }
 
 function updateElement(elementName, data, timestamp) {
@@ -219,7 +231,8 @@ function updateElement(elementName, data, timestamp) {
                         }, true, false);
                         container.series = chart.highcharts().series.length - 1;
                     }
-                    chart.highcharts().series[container.series].addPoint([timestamp.getTime(), data], true, false);
+                    chart.highcharts().series[container.series].addPoint([timestamp.getTime(), data], false, false);
+                    chartsToRedraw[container.id] = true;
                 }
 
                 else if (container.type === 'value') {
@@ -235,8 +248,8 @@ function updateElement(elementName, data, timestamp) {
 
                 else if (container.type === 'image') {
                     var htmlstring;
-                    if(continer.isPanorama === 'true') {
-                        htmlstring = '<div class="panorama"><img src="' + data + '"></div>';
+                    if(container.isPanorama === 'true') {
+                        htmlstring = '<div class="panorama"><img src="' + serverAddress + data + '"></div>';
                     } else {
                         htmlstring = '<img class="shadow-img" src="' + serverAddress + data + '">';
                     }

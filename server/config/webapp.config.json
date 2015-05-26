@@ -471,7 +471,7 @@
     },
     "photo": {
       "title": "Photos taken by our CanSat",
-      "conainers": [
+      "containers": [
         {
           "type": "image",
           "id": "photos-2-1",

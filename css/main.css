@@ -56,13 +56,20 @@
 
 .statistics.ui .statistic > .value, .statistic.ui > .value {
   text-transform: none;
-  white-space: nowrap;
-}
+  white-space: nowrap; }
 
 .centered {
   text-align: center; }
 
 .shadow-img {
   box-shadow: rgba(0, 0, 0, 0.4) 2px 2px 3px; }
+
+.panorama {
+  height: 550px;
+  width: 100%;
+  overflow: auto; }
+  .panorama img {
+    height: 500px;
+    width: auto; }
 
 /*# sourceMappingURL=main.css.map */

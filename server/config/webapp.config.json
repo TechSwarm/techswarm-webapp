@@ -457,6 +457,27 @@
           "lineColor": "#307BEA"
         }
       ]
+    },
+    "panorama": {
+      "title": "Photos taken by our CanSat",
+      "containers": [
+        {
+          "type": "image",
+          "isPanorama": "true",
+          "id": "photos-1-1",
+          "mode": "append"
+        }
+      ]
+    },
+    "photo": {
+      "title": "Photos taken by our CanSat",
+      "conainers": [
+        {
+          "type": "image",
+          "id": "photos-2-1",
+          "mode": "append"
+        }
+      ]
     }
   },
 
@@ -467,7 +488,7 @@
     "groundStationCurrent": "/gsinfo/current",
     "sensors": "/bulk/imu,sht,gps",
     "planetaryData": "/planetarydata",
-    "photos": "/photos/"
+    "photos": "/photos"
   },
 
   "staticData": {

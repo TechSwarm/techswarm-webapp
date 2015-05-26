@@ -82,6 +82,7 @@
 
 .statistics.ui .statistic > .value, .statistic.ui > .value {
   text-transform: none;
+  white-space: nowrap;
 }
 
 .centered {
@@ -90,4 +91,15 @@
 
 .shadow-img {
   box-shadow: rgba(0, 0, 0, 0.4) 2px 2px 3px;
+}
+
+.panorama {
+  height: 550px;
+  width: 100%;
+  overflow: auto;
+
+  img {
+    height: 500px;
+    width: auto;
+  }
 }

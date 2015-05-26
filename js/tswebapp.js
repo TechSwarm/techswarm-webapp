@@ -8,7 +8,8 @@ var lastUpdate;
 lastUpdate = {
     status: new Date(0),
     sensors: new Date(0),
-    planetaryData: new Date(0)
+    planetaryData: new Date(0),
+    photos: new Date(0)
 };
 
 var systemStatus;
@@ -106,6 +107,19 @@ function getGroundStationLocation() {
     "use strict";
     $.getJSON(serverAddress + serverURLs.groundStationCurrent, function (json) {
         updateElement('groundStation', new google.maps.LatLng(json.latitude, json.longitude));
+    });
+}
+
+function getPhotos() {
+    "use strict";
+    $.getJSON(serverAddress + serverURLs.photos + '?since=' + getTimeStampFromDate(lastUpdate.photos), function (json)  {
+        $.each(json, function (key, value) {
+           if (Boolean(value.isPanorama) === true) {
+               updateElement('panorama', value.url);
+           } else {
+               updateElement('photo', value.url);
+           }
+        });
     });
 }
 
@@ -220,7 +234,18 @@ function updateElement(elementName, data, timestamp) {
                 }
 
                 else if (container.type === 'image') {
-                    $('#' + container.id).html('<img class="shadow-img" src="' + serverAddress + data + '">');
+                    var htmlstring;
+                    if(continer.isPanorama === 'true') {
+                        htmlstring = '<div class="panorama"><img src="' + data + '"></div>';
+                    } else {
+                        htmlstring = '<img class="shadow-img" src="' + serverAddress + data + '">';
+                    }
+
+                    if(container.mode === 'append') {
+                        $('#' + container.id).append(htmlstring);
+                    } else {
+                        $('#' + container.id).html(htmlstring);
+                    }
                 }
 
                 else if (container.type === 'phase_steps') {
@@ -361,6 +386,7 @@ function initialiseApp() {
             getPlanetaryData();
             getGroundStationLocation();
             getSensorData();
+            getPhotos();
 
             $('.sidebar.menu .item').tab('change tab', startTab);
         }
@@ -370,6 +396,7 @@ function initialiseApp() {
                 getPlanetaryData();
                 getGroundStationLocation();
                 getSensorData();
+                getPhotos();
             }
         }, 2500);
     }, 1000);
@@ -421,6 +448,7 @@ function initialisePage() {
     gridPrinter(3, 9, 'dashboard');
     gridPrinter(3, 4, 'pdata');
     gridPrinter(1, 7, 'telemetry');
+    gridPrinter(1, 2, 'photos');
 
     getConfig();
 }

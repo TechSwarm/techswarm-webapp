@@ -53,7 +53,7 @@ function getStatus() {
 
         if (Boolean(json.connected)) {
             var now = new Date();
-            if(Math.abs(time - Math.floor(((now.getTime() - timestamp.getTime()) / 1000)) + json.missionTime) > 5) {
+            if (Math.abs(time - Math.floor(((now.getTime() - timestamp.getTime()) / 1000)) + json.missionTime) > 5) {
                 time = Math.floor(((now.getTime() - timestamp.getTime()) / 1000)) + json.missionTime;
             }
 
@@ -89,8 +89,8 @@ function getStatus() {
 function getPlanetaryData() {
     "use strict";
     $.getJSON(serverAddress + serverURLs.planetaryData + '?since=' + getTimeStampFromDate(lastUpdate.planetaryData), function (json) {
-        if(json.length > 0) {
-            lastUpdate.planetaryData = new Date(json[json.length - 1].timestamp);
+        if (json.length > 0) {
+            lastUpdate.planetaryData = M4TXtimestampToDate(json[json.length - 1].timestamp);
             $.each(json[json.length - 1], function (key, value) {
                 updateElement(key, value);
             });
@@ -113,13 +113,18 @@ function getGroundStationLocation() {
 
 function getPhotos() {
     "use strict";
-    $.getJSON(serverAddress + serverURLs.photos + '?since=' + getTimeStampFromDate(lastUpdate.photos), function (json)  {
+    $.getJSON(serverAddress + serverURLs.photos + '?since=' + getTimeStampFromDate(lastUpdate.photos), function (json) {
         $.each(json, function (key, value) {
-           if (Boolean(value.isPanorama) === true) {
-               updateElement('panorama', value.url);
-           } else {
-               updateElement('photo', value.url);
-           }
+            var timestamp = M4TXtimestampToDate(value.timestamp);
+            if (timestamp.getTime() > lastUpdate.photos.getTime()) {
+                lastUpdate.photos = timestamp;
+            }
+
+            if (Boolean(value.isPanorama) === true) {
+                updateElement('panorama', value.url);
+            } else {
+                updateElement('photo', value.url);
+            }
         });
     });
 }
@@ -130,7 +135,7 @@ function getSensorData() {
         $.each(json, function (sensorName, sensorData) {
             $.each(sensorData, function (index, table) {
                 var timestamp = M4TXtimestampToDate(table.timestamp);
-                if ((new Date(timestamp)).getTime() > lastUpdate.sensors.getTime()) {
+                if (timestamp.getTime() > lastUpdate.sensors.getTime()) {
                     lastUpdate.sensors = timestamp;
                 }
                 $.each(table, function (key, value) {
@@ -159,7 +164,7 @@ function setCanSatLocation(key, value) {
 function redrawCharts() {
     "use strict";
     $.each(chartsToRedraw, function (key, value) {
-        if(value === true) {
+        if (value === true) {
             $('#' + key).highcharts().redraw();
             chartsToRedraw[key] = false;
         }
@@ -177,11 +182,11 @@ function updateElement(elementName, data, timestamp) {
                     }
 
                     if (container.panTo === true) {
-                        if(mapHandles.lastLocations[elementName + container.id  + 'panTo'] !== data) {
+                        if (mapHandles.lastLocations[elementName + container.id + 'panTo'] !== data) {
                             mapHandles.maps[container.id].panTo(data);
                             mapHandles.maps[container.id].MapCenter = data;
                             mapHandles.maps[container.id].setZoom(10);
-                            mapHandles.lastLocations[elementName + container.id  + 'panTo'] = data;
+                            mapHandles.lastLocations[elementName + container.id + 'panTo'] = data;
                         }
                     }
 
@@ -195,11 +200,11 @@ function updateElement(elementName, data, timestamp) {
                                 }
                             });
                         } else {
-                            if(data !== mapHandles.lastLocations[elementName + container.id  + 'marker']) {
+                            if (data !== mapHandles.lastLocations[elementName + container.id + 'marker']) {
                                 mapHandles.markers[elementName + container.id].setPosition(data);
                             }
                         }
-                        mapHandles.lastLocations[elementName + container.id  + 'marker'] = data;
+                        mapHandles.lastLocations[elementName + container.id + 'marker'] = data;
 
                     } else if (container.mapObject === 'polyline') {
                         if (mapHandles.lastLocations[elementName + container.id + 'line'] !== undefined) {
@@ -215,7 +220,7 @@ function updateElement(elementName, data, timestamp) {
                             });
                             polyLine.setMap(mapHandles.maps[container.id]);
                         }
-                        mapHandles.lastLocations[elementName + container.id  + 'line'] = data;
+                        mapHandles.lastLocations[elementName + container.id + 'line'] = data;
                     }
                 }
                 else if (container.type === 'chart') {
@@ -248,13 +253,13 @@ function updateElement(elementName, data, timestamp) {
 
                 else if (container.type === 'image') {
                     var htmlstring;
-                    if(container.isPanorama === 'true') {
+                    if (container.isPanorama === 'true') {
                         htmlstring = '<div class="panorama"><img src="' + serverAddress + data + '"></div>';
                     } else {
                         htmlstring = '<img class="shadow-img" src="' + serverAddress + data + '">';
                     }
 
-                    if(container.mode === 'append') {
+                    if (container.mode === 'append') {
                         $('#' + container.id).append(htmlstring);
                     } else {
                         $('#' + container.id).html(htmlstring);
@@ -394,8 +399,8 @@ function initialiseApp() {
 
     getStatus();
 
-    setTimeout(function() {
-        if(systemStatus.connected) {
+    setTimeout(function () {
+        if (systemStatus.connected) {
             getPlanetaryData();
             getGroundStationLocation();
             getSensorData();
@@ -403,9 +408,9 @@ function initialiseApp() {
 
             $('.sidebar.menu .item').tab('change tab', startTab);
         }
-        setInterval(function() {
+        setInterval(function () {
             getStatus();
-            if(systemStatus.connected) {
+            if (systemStatus.connected) {
                 getPlanetaryData();
                 getGroundStationLocation();
                 getSensorData();

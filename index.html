@@ -8,6 +8,7 @@
     <script type="text/javascript" src="js/semantic.min.js"></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3"></script>
     <script type="text/javascript" src="js/tswebapp.js"></script>
+    <script type="text/javascript" src="js/tswebadmin.js"></script>
     <link rel="stylesheet" type="text/css" href="css/semantic.min.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link rel="shortcut icon" href="//www.techswarm.org/favicon.png">
@@ -122,6 +123,42 @@
                 <div class="row">
                     <h1>Photos</h1>
                 </div>
+            </div>
+        </div>
+        <div class="ui tab admin" data-tab="admin">
+            <div id="admin">
+                <h1>Auth</h1>
+                <div class="ui input">
+                    <label for="admin-auth-user">Username</label><input id="admin-auth-user" size="32">
+                    <label for="admin-auth-pass">Password</label><input id="admin-auth-pass" size="32">
+                </div>
+
+                <h1>Ground station info</h1>
+                <div id="admin-location" class="ui input">
+                    <label for="admin-location-lat">Latitude: </label><input id="admin-location-lat" type="text" size="20">
+                    <label for="admin-location-lon">Longitude: </label><input id="admin-location-lon" type="text" size="20">
+                    <div id="admin-getLocation" class="ui basic button">Get location</div>
+                    <div id="admin-location-send" class="ui simple button">Send</div>
+                </div>
+                <h1>Status</h1>
+                <div id="admin-states" class="ui buttons">
+                    <div id="admin-states-none" class="ui red basic button" data-key="none">None</div>
+                    <div id="admin-states-prep" class="ui yellow basic button" data-key="launch_preparation"><i class="settings icon"></i>Launch preparation</div>
+                    <div id="admin-states-laun" class="ui orange basic button" data-key="launch"><i class="rocket icon"></i>Launch</div>
+                    <div id="admin-states-desc" class="ui green basic button" data-key="descend"><i class="space shuttle icon"></i>Descent</div>
+                    <div id="admin-states-grou" class="ui blue basic button" data-key="ground_operations"><i class="world icon"></i>Ground operations</div>
+                    <div id="admin-states-comp" class="ui purple basic button" data-key="mission_complete"><i class="checkmark icon"></i>Mission complete</div>
+                    <div style="clear: both"><div class="ui input"><label for="admin-states-current">State: </label><input id="admin-states-current" type="text" size="20"></div></div>
+                </div>
+                <div id="admin-time">
+                    <div>
+                        <input type="checkbox" id="admin-time-update-no"><label for="admin-time-update-no">use current mission time</label>
+                    </div>
+                    <div>
+                        <div class="ui input"><label for="admin-time-new">new time: </label> <input type="text" id="admin-time-new" size="20"></div>
+                    </div>
+                </div>
+                <div id="admin-status-send" class="ui simple button">Send</div>
             </div>
         </div>
     </div>

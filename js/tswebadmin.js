@@ -1,4 +1,5 @@
 function getLocation() {
+    "use strict";
     navigator.geolocation.getCurrentPosition(function (newPosition) {
         $('#admin-location-lat').val(newPosition.coords.latitude);
         $('#admin-location-lon').val(newPosition.coords.longitude);
@@ -6,6 +7,7 @@ function getLocation() {
 }
 
 function AJAXpost(url, data) {
+    "use strict";
     var req = new XMLHttpRequest();
     req.onreadystatechange=function() {
         if (req.readyState==4 && req.status==201) {
@@ -25,16 +27,25 @@ function AJAXpost(url, data) {
 }
 
 function sendLocation() {
+    "use strict";
     var postdata = 'timestamp=' + getTimeStampFromDate(new Date()) + '000&latitude=' + $('#admin-location-lat').val() + '&longitude=' + $('#admin-location-lon').val();
-    AJAXpost(serverAddress + serverURLs.groundStation, postdata);
+    AJAXpost(serverAddress + config.serverURLs.groundStation, postdata);
 }
 
-$(document).ready(function () {
+function sendStatus() {
+    "use strict";
+    var newTime = ($('#admin-time-update-no').is(':checked')) ? time : $('#admin-time-new').val();
+    var postdata = 'timestamp=' + getTimeStampFromDate(new Date()) + '000&phase=' + $('#admin-states-current').val() + '&connected=' + $('#admin-status-cansat').is(':checked') + '&mission_time=' + newTime;
+    AJAXpost(serverAddress + config.serverURLs.status, postdata);
+}
+
+function initialiseAdmin () {
     "use strict";
     $('#sidebar').append('<a class="item" data-tab="admin">Settings</a>');
 
     $('#admin-getLocation').on('click', getLocation);
     $('#admin-location-send').on('click', sendLocation);
+    $('#admin-status-send').on('click', sendStatus);
     $('#admin-states').on('click', function (event) {
         console.log(event);
         $('#admin-states').children().each(function () {
@@ -42,5 +53,5 @@ $(document).ready(function () {
         });
 
         $('#admin-states-current').val($('#' + event.target.id).addClass('active').data('key'));
-    })
-});
+    });
+}

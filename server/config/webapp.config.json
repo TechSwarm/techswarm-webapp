@@ -497,5 +497,6 @@
     "planetLocation": "Solar System"
   },
 
-  "startTab": "dashboard"
+  "startTab": "dashboard",
+  "adminTab": "true"
 }

@@ -2,7 +2,6 @@
 var serverAddress = "http://api.techswarm.org"; // if empty current server will be used
 //CONFIG
 
-var serverURLs;
 var time = 0;
 var lastUpdate;
 lastUpdate = {
@@ -17,9 +16,8 @@ systemStatus = {
     connected: false,
     online: false
 };
-var elements;
-var startTab;
-var staticData;
+var config;
+
 var mapHandles;
 mapHandles = {
     maps: {},
@@ -40,7 +38,7 @@ function M4TXtimestampToDate(timestamp) {
 
 function getStatus() {
     "use strict";
-    $.getJSON(serverAddress + serverURLs.statusCurrent, function (json) {
+    $.getJSON(serverAddress + config.serverURLs.statusCurrent, function (json) {
         setServerStatus(1);
         setCansatStatus(Boolean(json.connected) ? 1 : 0);
 
@@ -51,27 +49,35 @@ function getStatus() {
 
         var timestamp = M4TXtimestampToDate(json.timestamp);
 
-        if (Boolean(json.connected)) {
+        /*if (Boolean(json.connected)) {
             var now = new Date();
-            if (Math.abs(time - Math.floor(((now.getTime() - timestamp.getTime()) / 1000)) + json.missionTime) > 5) {
+            //if (Math.abs(time - Math.floor(((now.getTime() - timestamp.getTime()) / 1000)) + json.missionTime) > 5) {
                 time = Math.floor(((now.getTime() - timestamp.getTime()) / 1000)) + json.missionTime;
-            }
+            //}
 
-            if ((json.phase === 'none' || json.phase === 'launch_preparation' || json.phase === 'mission_complete') && elements.mtime.event !== undefined) {
-                clearInterval(elements.mtime.event);
-                elements.mtime.event = undefined;
-            }
+            //if ((json.phase === 'none' || json.phase === 'launch_preparation' || json.phase === 'mission_complete') && config.elements.mtime.event !== undefined) {
+            //    clearInterval(config.elements.mtime.event);
+            //    config.elements.mtime.event = undefined;
+            //}
 
-            else if (elements.mtime.event === undefined) {
-                elements.mtime.event = setInterval(function () {
-                    updateElement('mtime', time);
-                    time += 1;
-                }, 1000);
-            }
+            //else if (config.elements.mtime.event === undefined) {
+            //    config.elements.mtime.event = setInterval(function () {
+                     updateElement('mtime', time);
+            //        time += 1;
+            //    }, 1000);
+            //}
         } else {
             time = json.missionTime;
             updateElement('mtime', time);
+        }*/
+
+        if (json.phase === 'none' || json.phase === 'launch_preparation' || json.phase === 'mission_complete') {
+            time = json.missionTime;
+        } else {
+            var now = new Date();
+            time = Math.floor(((now.getTime() - timestamp.getTime()) / 1000)) + json.missionTime;
         }
+        updateElement('mtime', time);
 
         lastUpdate.status = timestamp;
     })
@@ -79,8 +85,8 @@ function getStatus() {
             setServerStatus(0);
             setCansatStatus(-1);
             updateElement('mphase', 'none');
-            clearInterval(elements.mtime.event);
-            elements.mtime.event = undefined;
+            clearInterval(config.elements.mtime.event);
+            config.elements.mtime.event = undefined;
             systemStatus.connected = false;
             systemStatus.online = false;
         });
@@ -88,7 +94,7 @@ function getStatus() {
 
 function getPlanetaryData() {
     "use strict";
-    $.getJSON(serverAddress + serverURLs.planetaryData + '?since=' + getTimeStampFromDate(lastUpdate.planetaryData), function (json) {
+    $.getJSON(serverAddress + config.serverURLs.planetaryData + '?since=' + getTimeStampFromDate(lastUpdate.planetaryData), function (json) {
         if (json.length > 0) {
             lastUpdate.planetaryData = M4TXtimestampToDate(json[json.length - 1].timestamp);
             $.each(json[json.length - 1], function (key, value) {
@@ -106,14 +112,14 @@ function getTimeStampFromDate(date) {
 
 function getGroundStationLocation() {
     "use strict";
-    $.getJSON(serverAddress + serverURLs.groundStationCurrent, function (json) {
+    $.getJSON(serverAddress + config.serverURLs.groundStationCurrent, function (json) {
         updateElement('groundStation', new google.maps.LatLng(json.latitude, json.longitude));
     });
 }
 
 function getPhotos() {
     "use strict";
-    $.getJSON(serverAddress + serverURLs.photos + '?since=' + getTimeStampFromDate(lastUpdate.photos), function (json) {
+    $.getJSON(serverAddress + config.serverURLs.photos + '?since=' + getTimeStampFromDate(lastUpdate.photos), function (json) {
         $.each(json, function (key, value) {
             var timestamp = M4TXtimestampToDate(value.timestamp);
             if (timestamp.getTime() > lastUpdate.photos.getTime()) {
@@ -131,7 +137,7 @@ function getPhotos() {
 
 function getSensorData() {
     "use strict";
-    $.getJSON(serverAddress + serverURLs.sensors + '?since=' + getTimeStampFromDate(lastUpdate.sensors), function (json) {
+    $.getJSON(serverAddress + config.serverURLs.sensors + '?since=' + getTimeStampFromDate(lastUpdate.sensors), function (json) {
         $.each(json, function (sensorName, sensorData) {
             $.each(sensorData, function (index, table) {
                 var timestamp = M4TXtimestampToDate(table.timestamp);
@@ -174,7 +180,7 @@ function redrawCharts() {
 function updateElement(elementName, data, timestamp) {
     "use strict";
     try {
-        $.each(elements[elementName].containers, function (key, container) {
+        $.each(config.elements[elementName].containers, function (key, container) {
             try {
                 if (container.type === 'map') {
                     if (mapHandles.maps[container.id] === undefined) {
@@ -244,11 +250,11 @@ function updateElement(elementName, data, timestamp) {
                     var text = ' – ';
                     if (data !== undefined) {
                         text = data.toString().replace('_', ' ');
-                        if (elements[elementName].valueSuffix !== undefined) {
-                            text += elements[elementName].valueSuffix;
+                        if (config.elements[elementName].valueSuffix !== undefined) {
+                            text += config.elements[elementName].valueSuffix;
                         }
                     }
-                    $('#' + container.id).html('<div class="centered"><div class="ui small statistic"><div class="label">' + elements[elementName].title + '</div><div class="value">' + text + '</div></div>');
+                    $('#' + container.id).html('<div class="centered"><div class="ui small statistic"><div class="label">' + config.elements[elementName].title + '</div><div class="value">' + text + '</div></div>');
                 }
 
                 else if (container.type === 'image') {
@@ -270,7 +276,7 @@ function updateElement(elementName, data, timestamp) {
                     var phaseNumber = 0;
                     if (data === 'launch_preparation') {
                         phaseNumber = 1;
-                    } else if (data === 'launch' || phase === 'countdown') {
+                    } else if (data === 'launch' || data === 'countdown') {
                         phaseNumber = 2;
                     } else if (data === 'descend') {
                         phaseNumber = 3;
@@ -305,7 +311,7 @@ function updateElement(elementName, data, timestamp) {
 
 function initialiseElement(elementName) {
     "use strict";
-    $.each(elements[elementName].containers, function (key, container) {
+    $.each(config.elements[elementName].containers, function (key, container) {
         if (container.type === 'map') {
             $('#' + container.id).height('400px');
             mapHandles.maps[container.id] = new google.maps.Map(document.getElementById(container.id), {
@@ -333,14 +339,14 @@ function initialiseElement(elementName) {
                         text: null
                     },
                     labels: {
-                        format: '{value}' + elements[elementName].valueSuffix
+                        format: '{value}' + config.elements[elementName].valueSuffix
                     }
                 },
                 xAxis: {
                     type: 'datetime'
                 },
                 tooltip: {
-                    valueSuffix: elements[elementName].valueSuffix
+                    valueSuffix: config.elements[elementName].valueSuffix
                 },
                 series: []
             });
@@ -375,7 +381,7 @@ function setCansatStatus(status) { // status: -1 - Unknown , 0 - Offline, 1 - On
 
 function loadStaticData() {
     "use strict";
-    $.each(staticData, function (key, value) {
+    $.each(config.staticData, function (key, value) {
         updateElement(key, value);
     });
 }
@@ -395,8 +401,11 @@ function gridPrinter(x, y, container) {
 
 function initialiseApp() {
     "use strict";
-    loadStaticData();
+    if(config.adminTab === 'true') {
+        initialiseAdmin();
+    }
 
+    loadStaticData();
     getStatus();
 
     setTimeout(function () {
@@ -406,7 +415,7 @@ function initialiseApp() {
             getSensorData();
             getPhotos();
 
-            $('.sidebar.menu .item').tab('change tab', startTab);
+            $('.sidebar.menu .item').tab('change tab', config.startTab);
         }
         setInterval(function () {
             getStatus();
@@ -423,10 +432,7 @@ function initialiseApp() {
 function getConfig() {
     "use strict";
     $.getJSON(serverAddress + '/config/webapp.config.json', function (json) {
-        serverURLs = json.serverURLs;
-        staticData = json.staticData;
-        elements = json.elements;
-        startTab = json.startTab;
+        config = json;
 
         initialiseApp();
 

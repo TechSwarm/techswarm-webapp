@@ -12,12 +12,8 @@ function AJAXpost(url, data) {
     req.onreadystatechange=function() {
         if (req.readyState==4 && req.status==201) {
             alert("Success!");
-        } else if (req.readyState==4 && req.status==401) {
-            alert("Wrong username/password!");
-        } else if (req.readyState==4 && req.status==400) {
-            alert("Wrong data!");
         } else if (req.readyState==4) {
-            alert("ERROR!");
+            alert("ERROR! State: " + req.readyState + ' Status: ' + req.status);
         }
     };
     req.open('POST', url, true);
@@ -39,6 +35,12 @@ function sendStatus() {
     AJAXpost(serverAddress + config.serverURLs.status, postdata);
 }
 
+function sendCustom() {
+    "use strict";
+    var postdata = (($('#admin-custom-timestamp').is(':checked')) ? 'timestamp=' + getTimeStampFromDate(new Date()) + '000&': '') + $('#admin-custom-post').val();
+    AJAXpost(serverAddress + $('#admin-custom-path').val(), postdata);
+}
+
 function initialiseAdmin () {
     "use strict";
     $('#sidebar').append('<a class="item" data-tab="admin">Settings</a>');
@@ -46,6 +48,7 @@ function initialiseAdmin () {
     $('#admin-getLocation').on('click', getLocation);
     $('#admin-location-send').on('click', sendLocation);
     $('#admin-status-send').on('click', sendStatus);
+    $('#admin-custom-send').on('click', sendCustom);
     $('#admin-states').on('click', function (event) {
         console.log(event);
         $('#admin-states').children().each(function () {

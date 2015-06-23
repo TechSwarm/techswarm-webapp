@@ -180,6 +180,13 @@ function redrawCharts() {
 function updateElement(elementName, data, timestamp) {
     "use strict";
     try {
+        if (data===null) {
+            data='–';
+        }
+        if (config.elements[elementName].modifier !== undefined) {
+            data = Math.round(parseFloat(data) * config.elements[elementName].modifier * 10000) / 10000;
+        }
+
         $.each(config.elements[elementName].containers, function (key, container) {
             try {
                 if (container.type === 'map') {

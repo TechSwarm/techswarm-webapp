@@ -39,6 +39,7 @@
     "pressure": {
       "title": "Pressure",
       "valueSuffix": " hPa",
+      "modifier": 0.000244140625,
       "containers": [
         {
           "type": "chart",
@@ -57,6 +58,7 @@
     "accelX": {
       "title": "Acceleration X",
       "valueSuffix": " g",
+      "modifier": 0.000061,
       "containers": [
         {
           "type": "chart",
@@ -75,6 +77,7 @@
     "accelY": {
       "title": "Acceleration Y",
       "valueSuffix": " g",
+      "modifier": 0.000061,
       "containers": [
         {
           "type": "chart",
@@ -93,6 +96,7 @@
     "accelZ": {
       "title": "Acceleration Z",
       "valueSuffix": " g",
+      "modifier": 0.000061,
       "containers": [
         {
           "type": "chart",
@@ -109,13 +113,14 @@
       ]
     },
     "gyroX": {
-      "title": "Orientation X",
-      "valueSuffix": "°",
+      "title": "Angular velocity X",
+      "valueSuffix": "dps",
+      "modifier": 0.00875,
       "containers": [
         {
           "type": "chart",
           "chartType": "spline",
-          "chartName": "Orientation",
+          "chartName": "Angular velocity",
           "seriesName": "X",
           "legend": true,
           "id": "telemetry-5-1"
@@ -127,13 +132,14 @@
       ]
     },
     "gyroY": {
-      "title": "Orientation Y",
-      "valueSuffix": "°",
+      "title": "Angular velocity Y",
+      "valueSuffix": "dps",
+      "modifier": 0.00875,
       "containers": [
         {
           "type": "chart",
           "chartType": "spline",
-          "chartName": "Orientation",
+          "chartName": "Angular velocity",
           "seriesName": "Y",
           "legend": true,
           "id": "telemetry-5-1"
@@ -145,13 +151,14 @@
       ]
     },
     "gyroZ": {
-      "title": "Orientation Z",
-      "valueSuffix": "°",
+      "title": "Angular velocity Z",
+      "valueSuffix": "dps",
+      "modifier": 0.00875,
       "containers": [
         {
           "type": "chart",
           "chartType": "spline",
-          "chartName": "Orientation",
+          "chartName": "Angular velocity",
           "seriesName": "Z",
           "legend": true,
           "id": "telemetry-5-1"
@@ -165,6 +172,7 @@
     "magnetX": {
       "title": "Magnetic field X",
       "valueSuffix": " gauss",
+      "modifier": 0.000080,
       "containers": [
         {
           "type": "chart",
@@ -183,6 +191,7 @@
     "magnetY": {
       "title": "Magnetic field Y",
       "valueSuffix": " gauss",
+      "modifier": 0.000080,
       "containers": [
         {
           "type": "chart",
@@ -201,6 +210,7 @@
     "magnetZ": {
       "title": "Magnetic field Z",
       "valueSuffix": " gauss",
+      "modifier": 0.000080,
       "containers": [
         {
           "type": "chart",

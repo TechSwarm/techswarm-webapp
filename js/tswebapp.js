@@ -330,7 +330,8 @@ function initialiseElement(elementName) {
         } else if (container.type === 'chart') {
             $('#' + container.id).highcharts({
                 chart: {
-                    type: container.chartType
+                    type: container.chartType,
+                    zoomType: 'x'
                 },
                 title: {
                     text: container.chartName
@@ -478,7 +479,7 @@ function initialisePage() {
 
     gridPrinter(3, 9, 'dashboard');
     gridPrinter(3, 4, 'pdata');
-    gridPrinter(1, 7, 'telemetry');
+    gridPrinter(1, 8, 'telemetry');
     gridPrinter(1, 2, 'photos');
 
     getConfig();

@@ -253,6 +253,13 @@
         {
           "type": "value",
           "id": "dashboard-6-3"
+        },
+        {
+          "type": "chart",
+          "chartType": "spline",
+          "chartName": "Altitude",
+          "seriesName": "Altitude",
+          "id": "telemetry-7-1"
         }
       ]
     },
@@ -444,7 +451,7 @@
       "containers": [
         {
           "type": "map",
-          "id": "telemetry-7-1",
+          "id": "telemetry-8-1",
           "mapObject": "marker",
           "markerIcon": "gstation.png"
         }
@@ -455,14 +462,14 @@
       "containers": [
         {
           "type": "map",
-          "id": "telemetry-7-1",
+          "id": "telemetry-8-1",
           "mapObject": "marker",
           "markerIcon": "cansat.png",
           "panTo": true
         },
         {
           "type": "map",
-          "id": "telemetry-7-1",
+          "id": "telemetry-8-1",
           "mapObject": "polyline",
           "lineColor": "#307BEA"
         }
